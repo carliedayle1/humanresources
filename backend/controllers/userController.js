@@ -6,23 +6,24 @@ import generateToken from "../utils/generateToken.js";
 // @route POST /api/users/login
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { idNumber, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ idNumber });
 
   if (user && (await user.matchPassword(password))) {
+    const { name, idNumber, isAdmin, profilePicture, campus, userType } = user;
     res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      userType: user.userType,
-      profilePicture: user.profilePicture,
+      name,
+      idNumber,
+      isAdmin,
+      profilePicture,
+      campus,
+      userType,
       token: generateToken(user._id),
     });
   } else {
     res.status(401);
-    throw new Error("Invalid email or password");
+    throw new Error("Invalid id number or password");
   }
 });
 
@@ -30,9 +31,17 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Private/Admin
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, isAdmin, userType } = req.body;
+  const {
+    idNumber,
+    name,
+    email,
+    college,
+    position,
+    password,
+    isAdmin,
+  } = req.body;
 
-  const userExist = await User.findOne({ email });
+  const userExist = await User.findOne({ idNumber });
 
   if (userExist) {
     res.status(400);
@@ -40,18 +49,24 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.create({
+    idNumber,
     name,
     email,
+    college,
+    position,
     password,
     isAdmin,
-    userType,
+    userType: req.user.userType,
   });
 
   if (user) {
     res.status(201).json({
       _id: user._id,
+      idNumber: user.idNumber,
       name: user.name,
       email: user.email,
+      college: user.college,
+      position: user.position,
       isAdmin: user.isAdmin,
       userType: user.userType,
       profilePicture: user.profilePicture,
@@ -75,7 +90,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      userType: user.adminType,
       profilePicture: user.profilePicture,
     });
   } else {
@@ -88,7 +102,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route GET /api/users
 // @access Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find();
+  const users = await User.find({ userType: req.user.userType });
 
   res.json(users);
 });

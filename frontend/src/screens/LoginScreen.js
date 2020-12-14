@@ -8,7 +8,7 @@ import { login } from "../actions/userActions";
 import { useForm } from "react-hook-form";
 
 const LoginScreen = ({ location, history }) => {
-  const [email, setEmail] = useState("");
+  const [idNumber, setIdNumber] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const LoginScreen = ({ location, history }) => {
   }, [history, userInfo, redirect]);
 
   const submitHandler = (e) => {
-    dispatch(login(email, password));
+    dispatch(login(idNumber, password));
   };
 
   return (
@@ -37,24 +37,24 @@ const LoginScreen = ({ location, history }) => {
       {loading && <Loader />}
       <Form onSubmit={handleSubmit(submitHandler)} noValidate>
         <Form.Group controlId='email'>
-          <Form.Label> Email Address</Form.Label>
+          <Form.Label>ID Number</Form.Label>
           <Form.Control
-            type='email'
-            placeholder='Enter email'
-            value={email}
-            name='email'
-            ref={register({
-              required: true,
-              pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
-            })}
-            onChange={(e) => setEmail(e.target.value)}
+            type='text'
+            placeholder='Enter id number'
+            value={idNumber}
+            // name='idNumber'
+            // ref={register({
+            //   required: true,
+            //   pattern: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+            // })}
+            onChange={(e) => setIdNumber(e.target.value)}
           ></Form.Control>
-          {errors.email?.type === "required" && (
+          {/* {errors.email?.type === "required" && (
             <p className='text-danger mt-1'>Email is required</p>
-          )}{" "}
-          {errors.email?.type === "pattern" && (
+          )}{" "} */}
+          {/* {errors.email?.type === "pattern" && (
             <p className='text-danger mt-1'>Email must be a valid email</p>
-          )}
+          )} */}
         </Form.Group>
 
         <Form.Group controlId='password'>

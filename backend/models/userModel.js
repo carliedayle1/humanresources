@@ -3,13 +3,22 @@ import bcrypt from "bcryptjs";
 
 const userSchema = mongoose.Schema(
   {
+    userType: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
     name: {
       type: String,
       required: true,
     },
-    email: {
+    idNumber: {
       type: String,
       required: true,
+      unique: true,
+    },
+    email: {
+      type: String,
       unique: true,
     },
     profilePicture: {
@@ -26,10 +35,23 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
-    userType: {
+    position: {
+      type: String,
+    },
+    rank: {
+      type: String,
+    },
+    college: {
+      type: String,
+    },
+    campus: {
+      type: String,
+    },
+    leaveCredits: {
       type: Number,
-      required: true,
-      default: 0,
+    },
+    dateHired: {
+      type: String,
     },
   },
   {

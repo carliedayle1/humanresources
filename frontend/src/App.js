@@ -11,6 +11,8 @@ import RegisterScreen from "./screens/RegisterScreen";
 import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import UserProfileScreen from "./screens/UserProfileScreen";
+import UserDocumentScreen from "./screens/UserDocumentScreen";
+// import SampleScreen from "./screens/SampleScreen";
 
 const App = () => {
   const userLogin = useSelector((state) => state.userLogin);
@@ -36,6 +38,8 @@ const App = () => {
                 <Route path='/users' component={UserListScreen} exact />
                 <Route path='/users/:id/edit' component={UserEditScreen} />
                 <Route path='/profile' component={UserProfileScreen} />
+                <Route path='/documents' component={UserDocumentScreen} />
+                {/* <Route path='/sample' component={SampleScreen} exact /> */}
               </Container>
             </Col>
           </Row>

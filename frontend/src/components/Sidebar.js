@@ -37,27 +37,37 @@ const Sidebar = () => {
                   <Accordion.Toggle
                     as={Button}
                     variant='Card.Header'
-                    eventKey='0'
+                    eventKey='1'
+                    className='text-dark'
                   >
-                    <Link to='/profile' className='text-dark'>
-                      Profile
-                    </Link>
+                    Account
                   </Accordion.Toggle>
                 </Card.Header>
+                <Accordion.Collapse eventKey='1'>
+                  <ListGroup className='border-0 rounded-0'>
+                    <ListGroup.Item>
+                      <Link to='/profile'>Profile</Link>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      <Link to='/documents'>Documents</Link>
+                    </ListGroup.Item>
+                  </ListGroup>
+                </Accordion.Collapse>
               </Card>
+
               {userInfo.isAdmin && (
                 <Card>
                   <Card.Header>
                     <Accordion.Toggle
                       as={Button}
                       variant='Card.Header'
-                      eventKey='1'
+                      eventKey='2'
                       className='text-dark'
                     >
                       Users
                     </Accordion.Toggle>
                   </Card.Header>
-                  <Accordion.Collapse eventKey='1'>
+                  <Accordion.Collapse eventKey='2'>
                     <ListGroup className='border-0 rounded-0'>
                       <ListGroup.Item>
                         <Link to='/users'>List all users</Link>

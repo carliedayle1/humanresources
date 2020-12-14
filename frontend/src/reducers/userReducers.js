@@ -26,6 +26,20 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_RESET,
   USER_UPDATE_SUCCESS,
+  USER_UPLOAD_DOCUMENT_FAIL,
+  USER_UPLOAD_DOCUMENT_REQUEST,
+  USER_UPLOAD_DOCUMENT_SUCCESS,
+  USER_DOCUMENT_LIST_REQUEST,
+  USER_DOCUMENT_LIST_SUCCESS,
+  USER_DOCUMENT_LIST_FAIL,
+  USER_DOCUMENT_LIST_RESET,
+  USER_DELETE_DOCUMENT_REQUEST,
+  USER_DELETE_DOCUMENT_SUCCESS,
+  USER_DELETE_DOCUMENT_FAIL,
+  USER_DELETE_DOCUMENT_RESET,
+  USER_DOWNLOAD_DOCUMENT_REQUEST,
+  USER_DOWNLOAD_DOCUMENT_SUCCESS,
+  USER_DOWNLOAD_DOCUMENT_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -131,6 +145,65 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return { loading: false, error: action.payload };
     case USER_UPDATE_PROFILE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userUploadDocumentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_UPLOAD_DOCUMENT_REQUEST:
+      return { ...state, loading: true };
+    case USER_UPLOAD_DOCUMENT_SUCCESS:
+      return { loading: false, success: true };
+    case USER_UPLOAD_DOCUMENT_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const userDocumentListReducer = (state = { documents: [] }, action) => {
+  switch (action.type) {
+    case USER_DOCUMENT_LIST_REQUEST:
+      return { loading: true };
+    case USER_DOCUMENT_LIST_SUCCESS:
+      return { loading: false, documents: action.payload };
+    case USER_DOCUMENT_LIST_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_DOCUMENT_LIST_RESET:
+      return {
+        documents: [],
+      };
+    default:
+      return state;
+  }
+};
+
+export const userDeleteDocumentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_DELETE_DOCUMENT_REQUEST:
+      return { loading: true };
+    case USER_DELETE_DOCUMENT_SUCCESS:
+      return { loading: false, success: true };
+    case USER_DELETE_DOCUMENT_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_DELETE_DOCUMENT_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userDownloadDocumentReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_DOWNLOAD_DOCUMENT_REQUEST:
+      return { loading: true };
+    case USER_DOWNLOAD_DOCUMENT_SUCCESS:
+      return { loading: false, success: true };
+    case USER_DOWNLOAD_DOCUMENT_FAIL:
+      return { loading: false, error: action.payload };
     default:
       return state;
   }

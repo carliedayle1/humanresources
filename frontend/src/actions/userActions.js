@@ -24,9 +24,21 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  USER_UPLOAD_DOCUMENT_REQUEST,
+  USER_UPLOAD_DOCUMENT_SUCCESS,
+  USER_UPLOAD_DOCUMENT_FAIL,
+  USER_DOCUMENT_LIST_REQUEST,
+  USER_DOCUMENT_LIST_SUCCESS,
+  USER_DOCUMENT_LIST_FAIL,
+  USER_DELETE_DOCUMENT_REQUEST,
+  USER_DELETE_DOCUMENT_SUCCESS,
+  USER_DELETE_DOCUMENT_FAIL,
+  USER_DOWNLOAD_DOCUMENT_REQUEST,
+  USER_DOWNLOAD_DOCUMENT_SUCCESS,
+  USER_DOWNLOAD_DOCUMENT_FAIL,
 } from "../constants/userConstants";
 
-export const login = (email, password) => async (dispatch) => {
+export const login = (idNumber, password) => async (dispatch) => {
   try {
     dispatch({
       type: USER_LOGIN_REQUEST,
@@ -40,7 +52,7 @@ export const login = (email, password) => async (dispatch) => {
 
     const { data } = await axios.post(
       "/api/users/login",
-      { email, password },
+      { idNumber, password },
       config
     );
 
@@ -75,10 +87,15 @@ export const logout = () => (dispatch) => {
   });
 };
 
-export const register = (name, email, password, isAdmin, userType) => async (
-  dispatch,
-  getState
-) => {
+export const register = (
+  idNumber,
+  name,
+  email,
+  college,
+  position,
+  password,
+  isAdmin
+) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_REGISTER_REQUEST,
@@ -97,7 +114,7 @@ export const register = (name, email, password, isAdmin, userType) => async (
 
     const { data } = await axios.post(
       "/api/users",
-      { name, email, password, isAdmin, userType },
+      { idNumber, name, email, college, position, password, isAdmin },
       config
     );
 
@@ -121,7 +138,6 @@ export const listUsers = () => async (dispatch, getState) => {
     dispatch({
       type: USER_LIST_REQUEST,
     });
-
     const {
       userLogin: { userInfo },
     } = getState();
@@ -186,7 +202,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     dispatch({
       type: USER_DETAILS_REQUEST,
     });
-
     const {
       userLogin: { userInfo },
     } = getState();
@@ -286,6 +301,138 @@ export const userUpdateProfileDetails = (user) => async (
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const userUploadDoc = (document) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPLOAD_DOCUMENT_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.post(`/api/documents`, document, config);
+
+    dispatch({
+      type: USER_UPLOAD_DOCUMENT_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_UPLOAD_DOCUMENT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getUserDocuments = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DOCUMENT_LIST_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/documents`, config);
+
+    dispatch({
+      type: USER_DOCUMENT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DOCUMENT_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const deleteDocument = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DELETE_DOCUMENT_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/documents/${id}`, config);
+
+    dispatch({
+      type: USER_DELETE_DOCUMENT_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_DOCUMENT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const downloadDocument = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DOWNLOAD_DOCUMENT_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.get(`/api/documents/${id}`, config);
+
+    dispatch({
+      type: USER_DOWNLOAD_DOCUMENT_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DOWNLOAD_DOCUMENT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

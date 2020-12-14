@@ -9,12 +9,13 @@ import { USER_REGISTER_RESET } from "../constants/userConstants";
 import Swal from "sweetalert2";
 
 const RegisterScreen = ({ history }) => {
+  const [idNumber, setIdNumber] = useState("");
+  const [position, setPosition] = useState("");
+  const [college, setCollege] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("12345");
   const [isAdmin, setIsAdmin] = useState(false);
-  // eslint-disable-next-line
-  const [userType, setUserType] = useState(0);
 
   // eslint-disable-next-line
   const dispatch = useDispatch();
@@ -50,7 +51,9 @@ const RegisterScreen = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    dispatch(register(name, email, password, isAdmin, userType));
+    dispatch(
+      register(idNumber, name, email, college, position, password, isAdmin)
+    );
   };
 
   return (
@@ -61,10 +64,20 @@ const RegisterScreen = ({ history }) => {
       {loading && <Loader />}
 
       <Form onSubmit={submitHandler}>
+        <Form.Group controlId='idNumber'>
+          <Form.Label> Id Number </Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter id number'
+            value={idNumber}
+            onChange={(e) => setIdNumber(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
         <Form.Group controlId='name'>
           <Form.Label> Name </Form.Label>
           <Form.Control
-            type='name'
+            type='text'
             placeholder='Enter name'
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -81,8 +94,31 @@ const RegisterScreen = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
+        <Form.Group controlId='college'>
+          <Form.Label> College </Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter college'
+            value={college}
+            onChange={(e) => setCollege(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId='position'>
+          <Form.Label> Position </Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter position'
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
         <Form.Group controlId='password'>
-          <Form.Label> Password</Form.Label>
+          <Form.Label>
+            {" "}
+            Password (Note: The default password for all users is 12345){" "}
+          </Form.Label>
           <Form.Control
             type='password'
             placeholder='Enter password'
@@ -99,19 +135,6 @@ const RegisterScreen = ({ history }) => {
             checked={isAdmin}
             onChange={(e) => setIsAdmin(e.target.checked)}
           />
-        </Form.Group>
-
-        <Form.Group controlId='userType'>
-          <Form.Label>User Type</Form.Label>
-          <Form.Control
-            as='select'
-            custom
-            onChange={(e) => setUserType(e.target.value)}
-          >
-            <option value={1}>Admin</option>
-            <option value={2}>Staff</option>
-            <option value={3}>Employee</option>
-          </Form.Control>
         </Form.Group>
 
         <Button type='submit' variant='secondary'>

@@ -66,15 +66,22 @@ const UserListScreen = ({ history }) => {
         <Table striped bordered hover responsive className='mt-3'>
           <thead>
             <tr>
+              <th>Id Number</th>
               <th>Name</th>
               <th>Email</th>
+              <th>College</th>
+              <th>Position</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
+                <td>{user.idNumber}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
+                <td>{user.college}</td>
+                <td>{user.position}</td>
+
                 <td>
                   {" "}
                   <LinkContainer to={`/users/${user._id}/edit`}>
