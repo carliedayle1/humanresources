@@ -123,7 +123,7 @@ const UserDocumentScreen = ({ history }) => {
     });
   };
 
-  const downloadFile = (id, url) => {
+  const downloadFile = (id) => {
     dispatch(downloadDocument(id));
   };
 
@@ -222,7 +222,7 @@ const UserDocumentScreen = ({ history }) => {
                         <Button
                           variant='warning'
                           className='btn-sm mr-2'
-                          onClick={() => downloadFile(doc._id, doc.url)}
+                          onClick={() => downloadFile(doc._id)}
                         >
                           <i className='fas fa-file-download text-white'></i>
                         </Button>
