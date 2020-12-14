@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 const UserProfileScreen = ({ history }) => {
-
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -15,7 +14,7 @@ const UserProfileScreen = ({ history }) => {
     if (!userInfo) {
       history.push("/");
     }
-  }, [history])
+  }, [history, userInfo]);
 
   return (
     <>
