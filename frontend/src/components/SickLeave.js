@@ -32,7 +32,7 @@ const SickLeave = ({ userId }) => {
       dispatch(
         createLeaveCredit(
           {
-            type: "Vacation",
+            type: "Sick",
             earned,
             absences,
             balance: earned - absences,
