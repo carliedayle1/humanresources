@@ -40,6 +40,21 @@ import {
   USER_DOWNLOAD_DOCUMENT_REQUEST,
   USER_DOWNLOAD_DOCUMENT_SUCCESS,
   USER_DOWNLOAD_DOCUMENT_FAIL,
+  USER_SEARCH_REQUEST,
+  USER_SEARCH_SUCCESS,
+  USER_SEARCH_FAIL,
+  USER_SEARCH_RESET,
+  USER_DOCUMENTS_REQUEST,
+  USER_DOCUMENTS_SUCCESS,
+  USER_DOCUMENTS_FAIL,
+  USER_DOCUMENTS_RESET,
+  USER_RANK_REQUEST,
+  USER_RANK_SUCCESS,
+  USER_RANK_FAIL,
+  USER_RANK_RESET,
+  USER_NOTIFICATION_REQUEST,
+  USER_NOTIFICATION_SUCCESS,
+  USER_NOTIFICATION_FAIL,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -62,7 +77,7 @@ export const userRegisterReducer = (state = {}, action) => {
     case USER_REGISTER_REQUEST:
       return { loading: true };
     case USER_REGISTER_SUCCESS:
-      return { loading: false, success: true, userInfo: action.payload };
+      return { loading: false, success: true };
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
     case USER_REGISTER_RESET:
@@ -106,7 +121,7 @@ export const userDeleteReducer = (state = {}, action) => {
 export const userDetailsReducer = (state = { user: {} }, action) => {
   switch (action.type) {
     case USER_DETAILS_REQUEST:
-      return { ...state, loading: true };
+      return { loading: true };
     case USER_DETAILS_SUCCESS:
       return { loading: false, user: action.payload };
     case USER_DETAILS_FAIL:
@@ -203,6 +218,64 @@ export const userDownloadDocumentReducer = (state = {}, action) => {
     case USER_DOWNLOAD_DOCUMENT_SUCCESS:
       return { loading: false, success: true };
     case USER_DOWNLOAD_DOCUMENT_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userSearchReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case USER_SEARCH_REQUEST:
+      return { ...state, loading: true };
+    case USER_SEARCH_SUCCESS:
+      return { loading: false, user: action.payload };
+    case USER_SEARCH_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_SEARCH_RESET:
+      return { user: {} };
+    default:
+      return state;
+  }
+};
+
+export const userRankReducer = (state = { ranks: [] }, action) => {
+  switch (action.type) {
+    case USER_RANK_REQUEST:
+      return { loading: true };
+    case USER_RANK_SUCCESS:
+      return { loading: false, ranks: action.payload };
+    case USER_RANK_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_RANK_RESET:
+      return { ranks: [] };
+    default:
+      return state;
+  }
+};
+
+export const userDocumentsReducer = (state = { documents: [] }, action) => {
+  switch (action.type) {
+    case USER_DOCUMENTS_REQUEST:
+      return { loading: true };
+    case USER_DOCUMENTS_SUCCESS:
+      return { loading: false, documents: action.payload };
+    case USER_DOCUMENTS_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_DOCUMENTS_RESET:
+      return { documents: [] };
+    default:
+      return state;
+  }
+};
+
+export const userUpdateNotificationReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_NOTIFICATION_REQUEST:
+      return { loading: true };
+    case USER_NOTIFICATION_SUCCESS:
+      return { loading: false, success: true };
+    case USER_NOTIFICATION_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

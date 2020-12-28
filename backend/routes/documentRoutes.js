@@ -5,6 +5,7 @@ import {
   listDocuments,
   deleteDocument,
   downloadDocument,
+  listEmployeeDocuments,
 } from "../controllers/documentController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -13,6 +14,8 @@ router.route("/").post(protect, createDocument).get(protect, listDocuments);
 router
   .route("/:id")
   .delete(protect, deleteDocument)
-  .get(protect, downloadDocument);
+  .get(protect, admin, listEmployeeDocuments);
+
+router.route("/download/:id").get(protect, downloadDocument);
 
 export default router;

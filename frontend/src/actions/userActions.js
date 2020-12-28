@@ -1,5 +1,16 @@
 import axios from "axios";
 import {
+  EVALUATION_EVALUATOR_LIST_RESET,
+  EVALUATION_LIST_REQUEST,
+  EVALUATION_RATINGS_RESET,
+  EVALUATION_RATING_LIST_RESET,
+  EVALUATION_USER_LIST_RESET,
+} from "../constants/evaluationConstants";
+import {
+  LEAVE_LIST_RESET,
+  LEAVE_USER_LIST_RESET,
+} from "../constants/leaveCreditConstants";
+import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -36,6 +47,21 @@ import {
   USER_DOWNLOAD_DOCUMENT_REQUEST,
   USER_DOWNLOAD_DOCUMENT_SUCCESS,
   USER_DOWNLOAD_DOCUMENT_FAIL,
+  USER_SEARCH_REQUEST,
+  USER_SEARCH_SUCCESS,
+  USER_SEARCH_FAIL,
+  USER_DOCUMENT_LIST_RESET,
+  USER_RANK_REQUEST,
+  USER_RANK_SUCCESS,
+  USER_RANK_FAIL,
+  USER_RANK_RESET,
+  USER_DOCUMENTS_REQUEST,
+  USER_DOCUMENTS_SUCCESS,
+  USER_DOCUMENTS_FAIL,
+  USER_DOCUMENTS_RESET,
+  USER_NOTIFICATION_REQUEST,
+  USER_NOTIFICATION_SUCCESS,
+  USER_NOTIFICATION_FAIL,
 } from "../constants/userConstants";
 
 export const login = (idNumber, password) => async (dispatch) => {
@@ -85,17 +111,49 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: USER_LIST_RESET,
   });
+
+  dispatch({
+    type: USER_DOCUMENT_LIST_RESET,
+  });
+
+  dispatch({
+    type: LEAVE_LIST_RESET,
+  });
+
+  dispatch({
+    type: LEAVE_USER_LIST_RESET,
+  });
+
+  dispatch({
+    type: EVALUATION_RATING_LIST_RESET,
+  });
+
+  dispatch({
+    type: EVALUATION_EVALUATOR_LIST_RESET,
+  });
+
+  dispatch({
+    type: EVALUATION_LIST_REQUEST,
+  });
+
+  dispatch({
+    type: EVALUATION_USER_LIST_RESET,
+  });
+
+  dispatch({
+    type: USER_RANK_RESET,
+  });
+
+  dispatch({
+    type: USER_DOCUMENTS_RESET,
+  });
+
+  dispatch({
+    type: EVALUATION_RATINGS_RESET,
+  });
 };
 
-export const register = (
-  idNumber,
-  name,
-  email,
-  college,
-  position,
-  password,
-  isAdmin
-) => async (dispatch, getState) => {
+export const registerUser = (user) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_REGISTER_REQUEST,
@@ -112,11 +170,7 @@ export const register = (
       },
     };
 
-    const { data } = await axios.post(
-      "/api/users",
-      { idNumber, name, email, college, position, password, isAdmin },
-      config
-    );
+    const { data } = await axios.post("/api/users", user, config);
 
     dispatch({
       type: USER_REGISTER_SUCCESS,
@@ -421,6 +475,7 @@ export const downloadDocument = (id) => async (dispatch, getState) => {
 
     const config = {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
@@ -433,6 +488,141 @@ export const downloadDocument = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_DOWNLOAD_DOCUMENT_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const searchUser = (idNumber) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_SEARCH_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/search/${idNumber}`, config);
+
+    dispatch({
+      type: USER_SEARCH_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_SEARCH_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getUserRanks = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_RANK_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/${id}/ranks`, config);
+
+    dispatch({
+      type: USER_RANK_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_RANK_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getEmployeeDocuments = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_DOCUMENTS_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/documents/${id}`, config);
+
+    dispatch({
+      type: USER_DOCUMENTS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DOCUMENTS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const updateNotification = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_NOTIFICATION_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    await axios.get(`/api/users/notifications/${id}`, config);
+
+    dispatch({
+      type: USER_NOTIFICATION_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_NOTIFICATION_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

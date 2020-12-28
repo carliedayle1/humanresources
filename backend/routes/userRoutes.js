@@ -9,6 +9,9 @@ import {
   updateUser,
   getUserById,
   updateUserProfile,
+  searchUser,
+  getRanks,
+  updateNotification,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -28,5 +31,11 @@ router
   .delete(protect, admin, deleteUser)
   .put(protect, admin, updateUser)
   .get(protect, admin, getUserById);
+
+router.route("/search/:id").get(protect, searchUser);
+
+router.route("/:id/ranks").get(protect, getRanks);
+
+router.route("/notifications/:id").get(protect, updateNotification);
 
 export default router;

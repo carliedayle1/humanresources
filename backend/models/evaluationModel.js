@@ -1,54 +1,34 @@
 import mongoose from "mongoose";
 
-const ratingModel = mongoose.Schema(
-  {
-    educationalQualification: {
-      type: Number,
-    },
-    academicExperience: {
-      type: Number,
-    },
-    professionalAchievement: {
-      type: Number,
-    },
-    totalPoints: {
-      type: Number,
-    },
-    qcePoints: {
-      type: Number,
-    },
-    evaluatedBy: {
-      type: String,
-    },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-
 const evaluationModel = mongoose.Schema(
   {
     rank: {
       type: String,
-      required: true,
     },
-    totalPoints: {
+    total: {
       type: Number,
-      required: true,
-      default: 0.0,
     },
-    ratings: [ratingModel],
+    qce: {
+      type: Number,
+    },
+    ratings: [
+      {
+        rating: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: "Rating",
+        },
+      },
+    ],
     verifiedBy: {
       type: String,
-      required: true,
+    },
+    verifyType: {
+      type: Number,
+      require: true,
     },
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
       ref: "User",
     },

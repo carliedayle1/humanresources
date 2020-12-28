@@ -13,6 +13,14 @@ const users = [
     isAdmin: true,
   },
   {
+    userType: 1,
+    name: "Evaluator One",
+    idNumber: "12121",
+    password: bcrypt.hashSync("12345", 10),
+    profilePicture: "/images/man.png",
+    isEvaluator: true,
+  },
+  {
     userType: 2,
     name: "Admin Two",
     idNumber: "22222",
@@ -44,7 +52,7 @@ const users = [
     college: "College of Computer Studies",
     position: "Dean",
     rank: "Teacher 1",
-    leaveCredits: 15,
+    leaveCredits: 0,
     dateHired: dayjs().format("MMMM D, YYYY"),
   },
   {
@@ -58,7 +66,7 @@ const users = [
     college: "College of Computer Studies",
     position: "Staff",
     rank: "Teacher 1",
-    leaveCredits: 15,
+    leaveCredits: 0,
     dateHired: dayjs().format("MMMM D, YYYY"),
   },
   {
@@ -72,7 +80,7 @@ const users = [
     college: "College of Engineering",
     position: "Dean",
     rank: "Teacher 1",
-    leaveCredits: 15,
+    leaveCredits: 0,
     dateHired: dayjs().format("MMMM D, YYYY"),
   },
   {
@@ -86,7 +94,7 @@ const users = [
     college: "College of Computer Engineering",
     position: "Staff",
     rank: "Teacher 1",
-    leaveCredits: 15,
+    leaveCredits: 0,
     dateHired: dayjs().format("MMMM D, YYYY"),
   },
   {
@@ -100,7 +108,7 @@ const users = [
     college: "College of Teacher Education",
     position: "Dean",
     rank: "Teacher 1",
-    leaveCredits: 15,
+    leaveCredits: 0,
     dateHired: dayjs().format("MMMM D, YYYY"),
   },
   {
@@ -114,7 +122,7 @@ const users = [
     college: "College of Computer Studies",
     position: "Staff",
     rank: "Teacher 1",
-    leaveCredits: 15,
+    leaveCredits: 0,
     dateHired: dayjs().format("MMMM D, YYYY"),
   },
 ];

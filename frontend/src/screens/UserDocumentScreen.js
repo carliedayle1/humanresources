@@ -22,6 +22,8 @@ const UserDocumentScreen = ({ history }) => {
   const [type, setType] = useState("NBC");
   const [document, setDocument] = useState("");
 
+  const [keyfile, setKeyfile] = useState(dayjs().format("MMDDYYYYHHmmSSS"));
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
@@ -48,14 +50,14 @@ const UserDocumentScreen = ({ history }) => {
     success: successDeleteDocument,
   } = userDeleteDocument;
 
-  const userDownloadDocument = useSelector(
-    (state) => state.userDownloadDocument
-  );
-  const {
-    success: successDownload,
-    error: errorDownload,
-    loading: loadingDownload,
-  } = userDownloadDocument;
+  // const userDownloadDocument = useSelector(
+  //   (state) => state.userDownloadDocument
+  // );
+  // const {
+  //   error: errorDownload,
+  //   loading: loadingDownload,
+  //   success: successDownload,
+  // } = userDownloadDocument;
 
   const { register, errors, handleSubmit } = useForm();
 
@@ -64,18 +66,17 @@ const UserDocumentScreen = ({ history }) => {
       history.push("/");
     } else {
       dispatch(getUserDocuments());
-      dispatch(getUserDetails("profile"));
 
-      if (successUpload) {
-        setDocument("");
+      if (!user || !user._id) {
+        dispatch(getUserDetails("profile"));
       }
     }
+    // eslint-disable-next-line
   }, [history, dispatch, userInfo, successUpload, successDeleteDocument]);
 
   const uploadFileHandler = async (e) => {
     const file = e.document[0];
     // const file = e.target.files[0];
-
     const formData = new FormData();
     formData.append("document", file);
 
@@ -101,6 +102,16 @@ const UserDocumentScreen = ({ history }) => {
           userId: user._id,
         })
       );
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      setDocument("");
+      setKeyfile(dayjs().format("MMDDYYYYHHmmSSS"));
     } catch (error) {
       console.error(error);
     }
@@ -131,7 +142,7 @@ const UserDocumentScreen = ({ history }) => {
     <>
       <h1>Documents</h1>
 
-      <Container className='bg-info px-3 py-2 rounded-lg mt-5'>
+      <Container className='bg-light px-3 py-2 rounded-lg mt-5 shadow-lg'>
         <Container className='d-flex justify-content-center py-3'>
           <Form onSubmit={handleSubmit(uploadFileHandler)} className='w-50'>
             <Form.Group controlId='type'>
@@ -162,6 +173,7 @@ const UserDocumentScreen = ({ history }) => {
                 required: true,
               })}
               name='document'
+              key={keyfile}
               onChange={(e) => setDocument(e.target.files[0].name)}
             ></Form.File>
 
@@ -183,7 +195,11 @@ const UserDocumentScreen = ({ history }) => {
                 <Loader color='text-warning' />
               </div>
             ) : (
-              <Button type='submit' variant='warning' className='mt-2'>
+              <Button
+                type='submit'
+                variant='warning'
+                className='mt-2 shadow-lg'
+              >
                 Submit
               </Button>
             )}
@@ -194,14 +210,21 @@ const UserDocumentScreen = ({ history }) => {
 
         {loadingDocumentList || loadingDeleteDocument ? (
           <Loader color='text-warning' />
-        ) : documents && documents.length ? (
+        ) : !documents || documents.length === 0 ? (
+          <Message variant='secondary'>
+            {" "}
+            You haven't uploaded any document yet...
+          </Message>
+        ) : (
           <div>
             <Table
               striped
-              bordered
+              borderless
               hover
               responsive
-              className='bg-light rounded-lg my-3'
+              size='sm'
+              variant='dark'
+              className='rounded-lg my-3'
             >
               <thead>
                 <tr>
@@ -219,16 +242,10 @@ const UserDocumentScreen = ({ history }) => {
                       <td>{doc.type}</td>
                       <td>{dayjs(doc.createdAt).format("MMMM D, YYYY")}</td>
                       <td>
-                        <Button
-                          variant='warning'
-                          className='btn-sm mr-2'
-                          onClick={() => downloadFile(doc._id)}
-                        >
+                        <Button onClick={() => downloadFile(doc._id)}>
                           <i className='fas fa-file-download text-white'></i>
                         </Button>
-                        <Button variant='info' className='btn-sm mr-2'>
-                          <i className='fas fa-edit'></i>
-                        </Button>
+
                         <Button
                           variant='danger'
                           className='btn-sm'
@@ -247,11 +264,6 @@ const UserDocumentScreen = ({ history }) => {
               <Message variant='danger'>{errorDocumentList}</Message>
             )}
           </div>
-        ) : (
-          <Message variant='secondary'>
-            {" "}
-            You haven't uploaded any document yet...
-          </Message>
         )}
       </Container>
     </>

@@ -4,16 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { register } from "../actions/userActions";
+import { registerUser } from "../actions/userActions";
 import { USER_REGISTER_RESET } from "../constants/userConstants";
 import Swal from "sweetalert2";
 
 const RegisterScreen = ({ history }) => {
   const [idNumber, setIdNumber] = useState("");
   const [position, setPosition] = useState("");
+  const [rank, setRank] = useState("");
   const [college, setCollege] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [dateHired, setDateHired] = useState("");
   const [password, setPassword] = useState("12345");
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -33,11 +35,11 @@ const RegisterScreen = ({ history }) => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "User creation success",
+          title: "Employee creation success",
           showConfirmButton: false,
           timer: 1500,
         });
-        history.push("/users");
+        history.push("/employees");
       }
 
       if (!currentUserInfo.isAdmin) {
@@ -52,13 +54,23 @@ const RegisterScreen = ({ history }) => {
     e.preventDefault();
 
     dispatch(
-      register(idNumber, name, email, college, position, password, isAdmin)
+      registerUser({
+        idNumber,
+        name,
+        email,
+        college,
+        position,
+        rank,
+        dateHired,
+        password,
+        isAdmin,
+      })
     );
   };
 
   return (
     <FormContainer>
-      <h2>Create new user</h2>
+      <h2>Create new employee</h2>
 
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}
@@ -111,6 +123,26 @@ const RegisterScreen = ({ history }) => {
             placeholder='Enter position'
             value={position}
             onChange={(e) => setPosition(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId='rank'>
+          <Form.Label> Rank </Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter rank'
+            value={rank}
+            onChange={(e) => setRank(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
+        <Form.Group controlId='position'>
+          <Form.Label> Date Hired </Form.Label>
+          <Form.Control
+            type='date'
+            placeholder='Enter position'
+            value={dateHired}
+            onChange={(e) => setDateHired(e.target.value)}
           ></Form.Control>
         </Form.Group>
 

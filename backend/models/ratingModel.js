@@ -1,28 +1,25 @@
 import mongoose from "mongoose";
 
-const leaveCredit = mongoose.Schema(
+const ratingModel = mongoose.Schema(
   {
-    type: {
+    educationalQualification: {
+      type: Number,
+    },
+    academicExperience: {
+      type: Number,
+    },
+    professionalAchievement: {
+      type: Number,
+    },
+    evaluatedBy: {
       type: String,
+    },
+    verified: {
+      type: Boolean,
       required: true,
+      default: false,
     },
-    particular: {
-      type: String,
-    },
-    earned: {
-      type: Number,
-    },
-    absences: {
-      type: Number,
-    },
-    balance: {
-      type: Number,
-    },
-    createdBy: {
-      type: String,
-      required: true,
-    },
-    creatorType: {
+    ratingType: {
       type: Number,
       required: true,
     },
@@ -37,6 +34,6 @@ const leaveCredit = mongoose.Schema(
   }
 );
 
-const LeaveCredit = mongoose.model("LeaveCredit", leaveCredit);
+const Rating = mongoose.model("Rating", ratingModel);
 
-export default LeaveCredit;
+export default Rating;

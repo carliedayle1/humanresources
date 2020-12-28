@@ -3,6 +3,7 @@ import { Container, Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listUsers } from "../actions/userActions";
 import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Swal from "sweetalert2";
@@ -42,20 +43,18 @@ const UserListScreen = ({ history }) => {
   };
 
   useEffect(() => {
-    if (userInfo) {
-      dispatch(listUsers());
-
-      if (!userInfo.isAdmin) {
-        history.push("/");
-      }
-    } else {
+    if (!userInfo || !userInfo.isAdmin) {
       history.push("/");
+    } else {
+      if (!users || users.length === 0) {
+        dispatch(listUsers());
+      }
     }
-  }, [userInfo, history, dispatch, successDelete]);
+  }, [userInfo, history, dispatch, successDelete, users]);
 
   return (
     <Container>
-      <h3>All Users</h3>
+      <h3>All Employees</h3>
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant='danger'>{error}</Message>}
       {loading ? (
@@ -76,8 +75,12 @@ const UserListScreen = ({ history }) => {
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
-                <td>{user.idNumber}</td>
-                <td>{user.name}</td>
+                <td>
+                  <Link to={`/employees/${user._id}`}>{user.idNumber}</Link>
+                </td>
+                <td>
+                  <Link to={`/employees/${user._id}`}>{user.name}</Link>
+                </td>
                 <td>{user.email}</td>
                 <td>{user.college}</td>
                 <td>{user.position}</td>

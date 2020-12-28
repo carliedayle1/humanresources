@@ -13,7 +13,27 @@ import {
   userDocumentListReducer,
   userDeleteDocumentReducer,
   userDownloadDocumentReducer,
+  userSearchReducer,
+  userRankReducer,
+  userDocumentsReducer,
+  userUpdateNotificationReducer,
 } from "./reducers/userReducers";
+
+import {
+  leaveCreditCreateReducer,
+  leaveCreditUserListReducer,
+  leaveCreditListReducer,
+} from "./reducers/leaveCreditReducers";
+
+import {
+  evaluationRatingCreateReducer,
+  evaluationRatingListReducer,
+  evaluationCreateReducer,
+  evaluatorListReducer,
+  evaluationListReducer,
+  evaluationUserListReducer,
+  evaluationRatingsListReducer,
+} from "./reducers/evaluationReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -23,10 +43,24 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   userUpdate: userUpdateReducer,
   userUpdateProfile: userUpdateProfileReducer,
+  userRank: userRankReducer,
   userUploadDocument: userUploadDocumentReducer,
+  userDocuments: userDocumentsReducer,
   userDocumentList: userDocumentListReducer,
   userDeleteDocument: userDeleteDocumentReducer,
   userDownloadDocument: userDownloadDocumentReducer,
+  userUpdateNotification: userUpdateNotificationReducer,
+  userSearch: userSearchReducer,
+  leaveCreditCreate: leaveCreditCreateReducer,
+  leaveCreditList: leaveCreditListReducer,
+  leaveCreditUserList: leaveCreditUserListReducer,
+  evaluationCreate: evaluationCreateReducer,
+  evaluationRatingCreate: evaluationRatingCreateReducer,
+  evaluationRatingList: evaluationRatingListReducer,
+  evaluatorList: evaluatorListReducer,
+  evaluationList: evaluationListReducer,
+  evaluationUserList: evaluationUserListReducer,
+  evaluationRatingsList: evaluationRatingsListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

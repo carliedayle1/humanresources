@@ -3,9 +3,6 @@ import Document from "../models/documentModel.js";
 import express from "express";
 import fs from "fs";
 import path from "path";
-import mime from "mime";
-import FileSaver from "file-saver";
-import { fileURLToPath } from "url";
 
 // @desc    Upload a document
 // @route   POST /api/documents
@@ -62,7 +59,7 @@ const deleteDocument = asyncHandler(async (req, res) => {
 });
 
 // @desc    Download documents
-// @route   GET /api/documents/:id
+// @route   GET /api/documents/download/:id
 // @access  Private
 const downloadDocument = asyncHandler(async (req, res) => {
   const document = await Document.findById(req.params.id);
@@ -79,4 +76,26 @@ const downloadDocument = asyncHandler(async (req, res) => {
   }
 });
 
-export { createDocument, listDocuments, deleteDocument, downloadDocument };
+// @desc    Download documents
+// @route   GET /api/documents/:id
+// @access  Private
+const listEmployeeDocuments = asyncHandler(async (req, res) => {
+  const documents = await Document.find({ user: req.params.id }).sort(
+    "-createdAt"
+  );
+
+  if (documents) {
+    res.json(documents);
+  } else {
+    res.status(404);
+    throw new Error("Invalid document data");
+  }
+});
+
+export {
+  createDocument,
+  listDocuments,
+  deleteDocument,
+  downloadDocument,
+  listEmployeeDocuments,
+};

@@ -37,7 +37,7 @@ const LoginScreen = ({ location, history }) => {
       {loading && <Loader />}
       <Form onSubmit={handleSubmit(submitHandler)} noValidate>
         <Form.Group controlId='email'>
-          <Form.Label>ID Number</Form.Label>
+          <Form.Label>ID Number or Email</Form.Label>
           <Form.Control
             type='text'
             placeholder='Enter id number'

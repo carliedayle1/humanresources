@@ -6,12 +6,15 @@ import { useSelector } from "react-redux";
 const HomeScreen = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
   return (
     <>
       <Meta />
       <div className='jumbotron'>
         <h1 className='display-3'>
-          {userInfo ? userInfo.campus : "Human Resources Management System"}
+          {userInfo && userInfo.campus !== undefined
+            ? userInfo.campus
+            : "Human Resources Management System"}
         </h1>
         <p className='lead'>Enim velit dolor eu aute eiusmod.</p>
         <hr className='my-4' />
@@ -20,11 +23,17 @@ const HomeScreen = () => {
           tempor ullamco laboris. Aliquip aliquip ex mollit sint ex. Pariatur
           laborum deserunt ad sunt consequat sunt velit Lorem labore et.
         </p>
-        <p className='lead'>
-          <Link className='btn btn-secondary btn-lg' to='/login' role='button'>
-            Sign In
-          </Link>
-        </p>
+        {!userInfo && (
+          <p className='lead'>
+            <Link
+              className='btn btn-secondary btn-lg'
+              to='/login'
+              role='button'
+            >
+              Sign In
+            </Link>
+          </p>
+        )}
       </div>
     </>
   );

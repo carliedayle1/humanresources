@@ -32,52 +32,132 @@ const Sidebar = () => {
         <Col xs={12}>
           <Container className='p-3'>
             <Accordion>
-              <Card>
-                <Card.Header>
-                  <Accordion.Toggle
-                    as={Button}
-                    variant='Card.Header'
-                    eventKey='1'
-                    className='text-dark'
-                  >
-                    Account
-                  </Accordion.Toggle>
-                </Card.Header>
-                <Accordion.Collapse eventKey='1'>
-                  <ListGroup className='border-0 rounded-0'>
-                    <ListGroup.Item>
-                      <Link to='/profile'>Profile</Link>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      <Link to='/documents'>Documents</Link>
-                    </ListGroup.Item>
-                  </ListGroup>
-                </Accordion.Collapse>
-              </Card>
-
-              {userInfo.isAdmin && (
+              {userInfo.isEvaluator === false ? (
                 <Card>
                   <Card.Header>
                     <Accordion.Toggle
                       as={Button}
                       variant='Card.Header'
-                      eventKey='2'
+                      eventKey='1'
                       className='text-dark'
                     >
-                      Users
+                      Account
                     </Accordion.Toggle>
                   </Card.Header>
-                  <Accordion.Collapse eventKey='2'>
+                  <Accordion.Collapse eventKey='1'>
                     <ListGroup className='border-0 rounded-0'>
                       <ListGroup.Item>
-                        <Link to='/users'>List all users</Link>
+                        <Link to='/profile'>Profile</Link>
                       </ListGroup.Item>
                       <ListGroup.Item>
-                        <Link to='/admin/user/register'>Create new user</Link>
+                        <Link to='/documents'>Documents</Link>
                       </ListGroup.Item>
                     </ListGroup>
                   </Accordion.Collapse>
                 </Card>
+              ) : (
+                <Card>
+                  <Card.Header>
+                    <Accordion.Toggle
+                      as={Button}
+                      variant='Card.Header'
+                      className='text-dark'
+                    >
+                      <Link to='/evaluation'>Evaluation</Link>
+                    </Accordion.Toggle>
+                  </Card.Header>
+                </Card>
+              )}
+
+              {userInfo.isAdmin && (
+                <>
+                  <Card>
+                    <Card.Header>
+                      <Accordion.Toggle
+                        as={Button}
+                        variant='Card.Header'
+                        eventKey='2'
+                        className='text-dark'
+                      >
+                        Employees
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey='2'>
+                      <ListGroup className='border-0 rounded-0'>
+                        <ListGroup.Item>
+                          <Link to='/employees'>List all employees</Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          <Link to='/admin/employees/register'>
+                            Create new employee
+                          </Link>
+                        </ListGroup.Item>
+                      </ListGroup>
+                    </Accordion.Collapse>
+                  </Card>
+                  <Card>
+                    <Card.Header>
+                      <Accordion.Toggle
+                        as={Button}
+                        variant='Card.Header'
+                        eventKey='4'
+                        className='text-dark'
+                      >
+                        Leave Credits
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey='4'>
+                      <ListGroup className='border-0 rounded-0'>
+                        <ListGroup.Item>
+                          <Link to='/leavecredits'>
+                            Create/view leave credit
+                          </Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          <Link to='/leavecredits/history'>
+                            View leave credit history
+                          </Link>
+                        </ListGroup.Item>
+                      </ListGroup>
+                    </Accordion.Collapse>
+                  </Card>
+
+                  <Card>
+                    <Card.Header>
+                      <Accordion.Toggle
+                        as={Button}
+                        variant='Card.Header'
+                        eventKey='3'
+                        className='text-dark'
+                      >
+                        Evaluation
+                      </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey='3'>
+                      <ListGroup className='border-0 rounded-0'>
+                        <ListGroup.Item>
+                          <Link to='/evaluator/list'>List all evaluators</Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          <Link to='/evaluation'>Create new evaluation</Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          <Link to='/evaluator/create'>Create evaluator</Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          <Link to='/evaluation/history'>
+                            Evaluation history
+                          </Link>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                          <Link to='/evaluation/ratings/history'>
+                            Evaluation ratings history
+                          </Link>
+                        </ListGroup.Item>
+                      </ListGroup>
+                    </Accordion.Collapse>
+                  </Card>
+                </>
               )}
             </Accordion>
           </Container>

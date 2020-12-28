@@ -12,6 +12,15 @@ import UserListScreen from "./screens/UserListScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import UserProfileScreen from "./screens/UserProfileScreen";
 import UserDocumentScreen from "./screens/UserDocumentScreen";
+import LeaveCreditsScreen from "./screens/LeaveCreditsScreen";
+import EvaluationScreen from "./screens/EvaluationScreen";
+import CreateEvaluatorScreen from "./screens/CreateEvaluatorScreen";
+import EvaluatorListScreen from "./screens/EvaluatorListScreen";
+import LeaveCreditHistoryScreen from "./screens/LeaveCreditHistoryScreen";
+import EvaluationHistoryScreen from "./screens/EvaluationHistoryScreen";
+import EmployeeProfileScreen from "./screens/EmployeeProfileScreen";
+import EvaluationRatingsHistoryScreen from "./screens/EvaluationRatingsHistoryScreen";
+
 // import SampleScreen from "./screens/SampleScreen";
 
 const App = () => {
@@ -31,14 +40,50 @@ const App = () => {
                 <Route path='/' component={HomeScreen} exact />
                 <Route path='/login' component={LoginScreen} />
                 <Route
-                  path='/admin/user/register'
+                  path='/admin/employees/register'
                   component={RegisterScreen}
                   exact
                 />
-                <Route path='/users' component={UserListScreen} exact />
+                <Route path='/employees' component={UserListScreen} exact />
+                <Route
+                  path='/employees/:id'
+                  component={EmployeeProfileScreen}
+                  exact
+                />
                 <Route path='/users/:id/edit' component={UserEditScreen} />
                 <Route path='/profile' component={UserProfileScreen} />
                 <Route path='/documents' component={UserDocumentScreen} />
+
+                <Route
+                  path='/leavecredits'
+                  component={LeaveCreditsScreen}
+                  exact
+                />
+                <Route
+                  path='/leavecredits/history'
+                  component={LeaveCreditHistoryScreen}
+                  exact
+                />
+
+                <Route path='/evaluation' component={EvaluationScreen} exact />
+                <Route
+                  path='/evaluator/create'
+                  component={CreateEvaluatorScreen}
+                  exact
+                />
+                <Route path='/evaluator/list' component={EvaluatorListScreen} />
+                <Route
+                  path='/evaluation/history'
+                  component={EvaluationHistoryScreen}
+                  exact
+                />
+
+                <Route
+                  path='/evaluation/ratings/history'
+                  component={EvaluationRatingsHistoryScreen}
+                  exact
+                />
+
                 {/* <Route path='/sample' component={SampleScreen} exact /> */}
               </Container>
             </Col>

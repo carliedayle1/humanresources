@@ -9,6 +9,8 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import userRoutes from "./routes/userRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import documentRoutes from "./routes/documentRoutes.js";
+import leaveCreditRoutes from "./routes/leaveCreditRoutes.js";
+import evaluationRoutes from "./routes/evaluationRoutes.js";
 
 dotenv.config();
 
@@ -25,6 +27,8 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/documents", documentRoutes);
+app.use("/api/leavecredits", leaveCreditRoutes);
+app.use("/api/evaluation", evaluationRoutes);
 
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));

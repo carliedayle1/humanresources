@@ -19,7 +19,6 @@ const userSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      unique: true,
     },
     profilePicture: {
       type: String,
@@ -31,6 +30,11 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    isEvaluator: {
       type: Boolean,
       required: true,
       default: false,
@@ -53,6 +57,21 @@ const userSchema = mongoose.Schema(
     dateHired: {
       type: String,
     },
+
+    notifications: [
+      {
+        url: {
+          type: String,
+        },
+        message: {
+          type: String,
+        },
+        seen: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
