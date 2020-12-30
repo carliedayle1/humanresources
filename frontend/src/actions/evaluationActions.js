@@ -8,6 +8,9 @@ import {
   EVALUATION_LIST_FAIL,
   EVALUATION_LIST_REQUEST,
   EVALUATION_LIST_SUCCESS,
+  EVALUATION_RATINGS_ALL_FAIL,
+  EVALUATION_RATINGS_ALL_REQUEST,
+  EVALUATION_RATINGS_ALL_SUCCESS,
   EVALUATION_RATINGS_FAIL,
   EVALUATION_RATINGS_REQUEST,
   EVALUATION_RATINGS_SUCCESS,
@@ -258,6 +261,42 @@ export const listEvaluationRatings = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: EVALUATION_RATINGS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listAllEvaluationRatings = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: EVALUATION_RATINGS_ALL_REQUEST,
+    });
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      `/api/evaluation/rating/all/${id}`,
+      config
+    );
+
+    dispatch({
+      type: EVALUATION_RATINGS_ALL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: EVALUATION_RATINGS_ALL_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { Container, Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listUsers } from "../actions/userActions";
+import { listUsers, deleteUser } from "../actions/userActions";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Swal from "sweetalert2";
-import { deleteUser } from "../actions/userActions";
+import dayjs from "dayjs";
+import EmployeesExcel from "../components/EmployeesExcel";
 
 const UserListScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -104,6 +105,12 @@ const UserListScreen = ({ history }) => {
             ))}
           </tbody>
         </Table>
+      )}
+
+      {users && users.length > 0 && (
+        <EmployeesExcel
+          filename={`Employees List ${dayjs().format("MMMM D, YYYY")}`}
+        />
       )}
     </Container>
   );

@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import { Container, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listEvaluators } from "../actions/evaluationActions";
-// import { LinkContainer } from "react-router-bootstrap";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-// import Swal from "sweetalert2";
-// import { deleteUser } from "../actions/userActions";
+import EvaluatorsExcel from "../components/EvaluatorsExcel";
 
 const EvaluatorListScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -16,23 +14,6 @@ const EvaluatorListScreen = ({ history }) => {
 
   const evaluatorList = useSelector((state) => state.evaluatorList);
   const { loading, error, evaluators } = evaluatorList;
-
-  //   const deleteHandler = (id) => {
-  //     Swal.fire({
-  //       title: "Are you sure?",
-  //       text: "You won't be able to revert this!",
-  //       icon: "warning",
-  //       showCancelButton: true,
-  //       confirmButtonColor: "#3085d6",
-  //       cancelButtonColor: "#d33",
-  //       confirmButtonText: "Yes, delete it!",
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         dispatch(deleteUser(id));
-  //         Swal.fire("Deleted!", "Your file has been deleted.", "success");
-  //       }
-  //     });
-  //   };
 
   useEffect(() => {
     if (userInfo) {
@@ -50,10 +31,14 @@ const EvaluatorListScreen = ({ history }) => {
     <Container>
       <h3>All Evaluators</h3>
 
+      {evaluators && evaluators.length > 0 && <EvaluatorsExcel />}
+
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>
+      ) : evaluators && evaluators.length <= 0 ? (
+        <Message>There's no evaluators yet...</Message>
       ) : (
         <Table striped bordered hover responsive className='mt-3'>
           <thead>

@@ -7,6 +7,7 @@ import ServiceCredits from "../components/ServiceCredits";
 import VacationLeave from "../components/VacationLeave";
 import SickLeave from "../components/SickLeave";
 import LeaveCreditList from "../components/LeaveCreditList";
+import LeaveCreditExcel from "../components/LeaveCreditExcel";
 import SearchEmployee from "../components/SearchEmployee";
 import { listUserLeaveCredits } from "../actions/leaveCreditActions";
 import Swal from "sweetalert2";
@@ -121,7 +122,14 @@ const LeaveCreditsScreen = ({ history }) => {
             {showCredit ? "Hide" : "Show"} Credit History
           </Button>
 
-          {showCredit ? <LeaveCreditList /> : ""}
+          {showCredit ? (
+            <div>
+              <LeaveCreditList />
+              <LeaveCreditExcel filename={`${name} leave credit list`} />
+            </div>
+          ) : (
+            ""
+          )}
         </Container>
       </Container>
     </>

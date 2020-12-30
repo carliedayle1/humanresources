@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   EVALUATION_EVALUATOR_LIST_RESET,
   EVALUATION_LIST_REQUEST,
+  EVALUATION_RATINGS_ALL_RESET,
   EVALUATION_RATINGS_RESET,
   EVALUATION_RATING_LIST_RESET,
   EVALUATION_USER_LIST_RESET,
@@ -150,6 +151,10 @@ export const logout = () => (dispatch) => {
 
   dispatch({
     type: EVALUATION_RATINGS_RESET,
+  });
+
+  dispatch({
+    type: EVALUATION_RATINGS_ALL_RESET,
   });
 };
 

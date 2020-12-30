@@ -4,6 +4,7 @@ import { Container, Table } from "react-bootstrap";
 import { listEvaluations } from "../actions/evaluationActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import EvaluationHistoryExcel from "../components/EvaluationHistoryExcel";
 import dayjs from "dayjs";
 
 const EvaluationHistoryScreen = ({ history }) => {
@@ -28,11 +29,17 @@ const EvaluationHistoryScreen = ({ history }) => {
       <h1>Evaluation History</h1>
 
       <Container className='bg-light rounded p-4 shadow-lg'>
-        <h5>List of evaluations</h5>
+        <div className='d-flex flex-row justify-content-between align-items-end'>
+          <h5>List of evaluations</h5>
+
+          {evaluations && evaluations.length > 0 && <EvaluationHistoryExcel />}
+        </div>
 
         {error && <Message variant='danger'>{error}</Message>}
         {loading ? (
           <Loader />
+        ) : evaluations && evaluations.length <= 0 ? (
+          <Message>There's no evaluations created yet..</Message>
         ) : (
           <Table striped bordered hover size='sm' responsive className='mt-3'>
             <thead>
@@ -43,7 +50,7 @@ const EvaluationHistoryScreen = ({ history }) => {
                 <th>QCE Points</th>
                 <th>Rank</th>
                 <th>Verified By</th>
-                <th>Date verifiedBy</th>
+                <th>Date verified</th>
               </tr>
             </thead>
             <tbody>

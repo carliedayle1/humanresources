@@ -8,6 +8,7 @@ import {
   getEvaluations,
   getEmployeeEvaluations,
   getRatings,
+  getAllEvaluationRatings,
 } from "../controllers/evaluationController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -21,6 +22,7 @@ router
   .get(protect, admin, getRatings);
 
 router.route("/rating/:id").get(protect, admin, getEvaluationRatings);
+router.route("/rating/all/:id").get(protect, admin, getAllEvaluationRatings);
 
 router
   .route("/:id")

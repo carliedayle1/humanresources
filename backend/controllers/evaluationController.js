@@ -46,6 +46,22 @@ const getEvaluationRatings = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get all evaluation ratings of a specific user with true
+// @route   GET /api/evaluation/rating/all/:id
+// @access  Private/Evaluator
+const getAllEvaluationRatings = asyncHandler(async (req, res) => {
+  const userId = req.params.id;
+
+  const ratings = await Rating.find({ user: userId }).sort("-createdAt");
+
+  if (ratings) {
+    res.json(ratings);
+  } else {
+    res.status(404);
+    throw new Error("User ratings not found");
+  }
+});
+
 // @desc    Create evaluation
 // @route   POST /api/evaluation/:id
 // @access  Private/Admin
@@ -78,6 +94,10 @@ const createEvaluation = asyncHandler(async (req, res) => {
 
       const user = await User.findById(userId);
       user.rank = evaluation.rank;
+      user.notifications.push({
+        url: "/profile",
+        message: "Rank updated",
+      });
 
       await user.save();
 
@@ -167,6 +187,7 @@ const getRatings = asyncHandler(async (req, res) => {
 export {
   createEvaluationRating,
   getEvaluationRatings,
+  getAllEvaluationRatings,
   createEvaluation,
   getEvaluators,
   getEvaluations,

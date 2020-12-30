@@ -26,6 +26,10 @@ import {
   EVALUATION_RATINGS_SUCCESS,
   EVALUATION_RATINGS_FAIL,
   EVALUATION_RATINGS_RESET,
+  EVALUATION_RATINGS_ALL_REQUEST,
+  EVALUATION_RATINGS_ALL_SUCCESS,
+  EVALUATION_RATINGS_ALL_FAIL,
+  EVALUATION_RATINGS_ALL_RESET,
 } from "../constants/evaluationConstants";
 
 export const evaluationRatingCreateReducer = (state = {}, action) => {
@@ -136,6 +140,24 @@ export const evaluationRatingsListReducer = (
     case EVALUATION_RATINGS_FAIL:
       return { loading: false, error: action.payload };
     case EVALUATION_RATINGS_RESET:
+      return { ratings: [] };
+    default:
+      return state;
+  }
+};
+
+export const evaluationRatingsListAllReducer = (
+  state = { ratings: [] },
+  action
+) => {
+  switch (action.type) {
+    case EVALUATION_RATINGS_ALL_REQUEST:
+      return { loading: true };
+    case EVALUATION_RATINGS_ALL_SUCCESS:
+      return { loading: false, ratings: action.payload };
+    case EVALUATION_RATINGS_ALL_FAIL:
+      return { loading: false, error: action.payload };
+    case EVALUATION_RATINGS_ALL_RESET:
       return { ratings: [] };
     default:
       return state;

@@ -16,6 +16,7 @@ const users = [
     userType: 1,
     name: "Evaluator One",
     idNumber: "12121",
+    email: "evaluatorone@example.com",
     password: bcrypt.hashSync("12345", 10),
     profilePicture: "/images/man.png",
     isEvaluator: true,

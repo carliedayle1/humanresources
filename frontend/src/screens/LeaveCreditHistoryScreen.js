@@ -4,6 +4,7 @@ import { Container, Table } from "react-bootstrap";
 import { listLeaveCredits } from "../actions/leaveCreditActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import LeaveCreditHistoryExcel from "../components/LeaveCreditHistoryExcel";
 import dayjs from "dayjs";
 
 const LeaveCreditHistoryScreen = ({ history }) => {
@@ -27,8 +28,14 @@ const LeaveCreditHistoryScreen = ({ history }) => {
     <>
       <h1>Leave Credit History</h1>
       <Container className='bg-light p-4 rounded shadow-lg'>
-        <h5>List of Leave credits</h5>
-
+        <div className='d-flex flex-row justify-content-between align-items-end'>
+          <h5>List of Leave credits</h5>
+          <div>
+            {leaveCredits && leaveCredits.length > 0 && (
+              <LeaveCreditHistoryExcel />
+            )}
+          </div>
+        </div>
         {error && <Message variant='danger'>{error}</Message>}
         {loading ? (
           <Loader />

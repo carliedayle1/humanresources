@@ -33,6 +33,7 @@ import {
   evaluationListReducer,
   evaluationUserListReducer,
   evaluationRatingsListReducer,
+  evaluationRatingsListAllReducer,
 } from "./reducers/evaluationReducers";
 
 const reducer = combineReducers({
@@ -61,6 +62,7 @@ const reducer = combineReducers({
   evaluationList: evaluationListReducer,
   evaluationUserList: evaluationUserListReducer,
   evaluationRatingsList: evaluationRatingsListReducer,
+  evaluationRatingsListAll: evaluationRatingsListAllReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

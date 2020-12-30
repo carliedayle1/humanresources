@@ -4,6 +4,7 @@ import { Container, Table } from "react-bootstrap";
 import { listEvaluationRatings } from "../actions/evaluationActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import RatingsHistoryExcel from "../components/RatingsHistoryExcel";
 import dayjs from "dayjs";
 
 const EvaluationRatingsHistoryScreen = ({ history }) => {
@@ -30,7 +31,10 @@ const EvaluationRatingsHistoryScreen = ({ history }) => {
       <h1>Evaluation Rating History</h1>
 
       <Container className='bg-light rounded p-4 shadow-lg'>
-        <h5>List of ratings</h5>
+        <div className='d-flex justify-content-between align-items-end'>
+          <h5>List of ratings</h5>
+          {ratings && ratings.length > 0 && <RatingsHistoryExcel />}
+        </div>
 
         {error && <Message variant='danger'>{error}</Message>}
         {loading ? (
@@ -44,6 +48,7 @@ const EvaluationRatingsHistoryScreen = ({ history }) => {
                 <th>Educational Qualification</th>
                 <th>Academic Experience</th>
                 <th>Professional Achievement</th>
+                <th>Verified</th>
                 <th>Evaluated By</th>
                 <th>Date Evaluated</th>
               </tr>
@@ -57,8 +62,9 @@ const EvaluationRatingsHistoryScreen = ({ history }) => {
                     <td>{rating.educationalQualification}</td>
                     <td>{rating.academicExperience}</td>
                     <td>{rating.professionalAchievement}</td>
+                    <td>{rating.verified ? "Yes" : "No"}</td>
                     <td>{rating.evaluatedBy}</td>
-                    <td>{dayjs(rating.createdAt).format("MMMM D, YYYY")}</td>
+                    <td>{dayjs(rating.createdAt).format("MM-DD-YYYY")}</td>
                   </tr>
                 );
               })}

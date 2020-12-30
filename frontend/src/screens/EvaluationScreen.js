@@ -6,12 +6,14 @@ import Message from "../components/Message";
 import SearchEmployee from "../components/SearchEmployee";
 import Rating from "../components/Rating";
 import EvaluationList from "../components/EvaluationList";
+import EvaluationExcel from "../components/EvaluationExcel";
 import dayjs from "dayjs";
 import { useForm } from "react-hook-form";
 import {
   getEvaluationRatingList,
   createEvaluation,
   listUserEvaluations,
+  listAllEvaluationRatings,
 } from "../actions/evaluationActions";
 import Swal from "sweetalert2";
 
@@ -79,6 +81,7 @@ const EvaluationScreen = ({ history }) => {
       } else {
         dispatch(getEvaluationRatingList(user._id));
         dispatch(listUserEvaluations(user._id));
+        dispatch(listAllEvaluationRatings(user._id));
         setName(user.name);
         setPosition(user.position);
         setCollege(user.college);
@@ -340,7 +343,16 @@ const EvaluationScreen = ({ history }) => {
               {show ? "Hide" : "Show"} evaluation list
             </Button>
 
-            {show && <EvaluationList />}
+            {show && (
+              <div className='my-3'>
+                <EvaluationExcel
+                  filename={`${user.name} evaluation - ${dayjs().format(
+                    "MM-DD-YYYY"
+                  )}`}
+                />
+                <EvaluationList />
+              </div>
+            )}
           </>
         )}
       </Container>
