@@ -207,12 +207,14 @@ const EvaluationScreen = ({ history }) => {
                 : "py-3"
             }
           >
-            <Col sm={12} md={5}>
-              <Rating userId={user._id !== undefined ? user._id : ""} />
-            </Col>
+            {userInfo && userInfo.isEvaluator === true && (
+              <Col sm={12} md={5}>
+                <Rating userId={user._id !== undefined ? user._id : ""} />
+              </Col>
+            )}
 
             {userInfo && userInfo.isEvaluator === false && (
-              <Col sm={12} md={7}>
+              <Col sm={12} md={12}>
                 {loadingList ? (
                   <Loader />
                 ) : (

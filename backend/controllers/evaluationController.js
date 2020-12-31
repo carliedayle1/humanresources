@@ -21,6 +21,22 @@ const createEvaluationRating = asyncHandler(async (req, res) => {
   });
 
   if (rating) {
+    const admins = await User.find({
+      isAdmin: true,
+      userType: req.user.userType,
+    });
+
+    admins.map((user) => {
+      return user.notifications.push({
+        url: "/evaluation",
+        message: `Evaluation rating submitted by ${evaluator}`,
+      });
+    });
+
+    admins.map((user) => {
+      return user.save();
+    });
+
     res.json("Rating created successfully");
   } else {
     res.status(401);
