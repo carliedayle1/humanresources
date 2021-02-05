@@ -25,7 +25,10 @@ const EvaluationHistoryExcel = () => {
         >
           <ExcelSheet data={evaluations} name='All Employee Evaluations'>
             <ExcelColumn label='ID Number' value={(col) => col.user.idNumber} />
-            <ExcelColumn label='Employee Name' value={(col) => col.user.name} />
+            <ExcelColumn
+              label='Employee Name'
+              value={(col) => `${col.user.lastname}, ${col.user.firstname}`}
+            />
             <ExcelColumn label='Total Points' value='total' />
             <ExcelColumn label='QCE Points' value='qce' />
             <ExcelColumn label='Rank' value='rank' />

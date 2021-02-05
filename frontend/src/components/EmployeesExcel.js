@@ -22,7 +22,9 @@ const EmployeesExcel = ({ filename }) => {
     >
       <ExcelSheet data={users} name='Employees'>
         <ExcelColumn label='ID Number' value='idNumber' />
-        <ExcelColumn label='Name' value='name' />
+        <ExcelColumn label='Firstname' value='firstname' />
+        <ExcelColumn label='Middlename' value='middlename' />
+        <ExcelColumn label='Lastname' value='lastname' />
         <ExcelColumn label='Email' value='email' />
         <ExcelColumn label='College' value='college' />
         <ExcelColumn label='Campus' value='campus' />

@@ -3,6 +3,7 @@ import User from "../models/userModel.js";
 import Rank from "../models/rankModel.js";
 import generateToken from "../utils/generateToken.js";
 import mongoose from "mongoose";
+import cron from "node-cron";
 
 // @desc Auth user & get token
 // @route POST /api/users/login
@@ -38,6 +39,7 @@ const authUser = asyncHandler(async (req, res) => {
       profilePicture,
       campus,
       isEvaluator,
+      isSuperAdmin,
       userType,
       notifications: notif,
       password,
@@ -66,6 +68,7 @@ const registerUser = asyncHandler(async (req, res) => {
     isAdmin,
     isEvaluator,
     dateHired,
+    userType,
     program,
   } = req.body;
 
@@ -90,7 +93,7 @@ const registerUser = asyncHandler(async (req, res) => {
     rank,
     password,
     isAdmin,
-    userType: req.user.userType,
+    userType: userType || req.user.userType,
     isEvaluator,
     dateHired,
     program,
@@ -295,6 +298,81 @@ const updateNotification = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc Get all users
+// @route GET /api/users
+// @access Private/Admin
+const getAdmins = asyncHandler(async (req, res) => {
+  const users = await User.find({ isAdmin: true })
+    .select("-notifications -password")
+    .sort("createAt");
+  // console.log("hello");
+  res.json(users);
+  // res.json("hello");
+});
+
+// @desc    Get all leave credits
+// @route   GET /api/users/leaveCredits
+// @access  Private/Admin
+const leaveCreditsReport = asyncHandler(async (req, res) => {
+  const users = await User.find()
+    .select("leaveCredits firstname middlename lastname position")
+    .sort("leaveCredits position");
+
+  res.json(users);
+});
+
+// @desc    Get all users
+// @route   GET /api/users/all
+// @access  Private/Admin
+const allUsersReport = asyncHandler(async (req, res) => {
+  const users = await User.find()
+    .select("-notifications -password")
+    .sort("lastname");
+
+  res.json(users);
+});
+
+cron.schedule(
+  "0 0 1 * *",
+  asyncHandler(async (req, res) => {
+    const users = await User.find()
+      .where("position")
+      .equals(1)
+      .select("position leaveCredits");
+    // console.log("hello");
+
+    users.map((user) => (user.leaveCredits = user.leaveCredits + 1.25));
+
+    users.map((user) => user.save());
+
+    const users2 = await User.find()
+      .where("position")
+      .equals(2)
+      .select("position leaveCredits");
+
+    users2.map((user) => (user.leaveCredits = user.leaveCredits + 1.25));
+
+    users2.map((user) => user.save());
+  })
+);
+
+cron.schedule(
+  "0 0 1 1 *",
+  asyncHandler(async (req, res) => {
+    const users = await User.find().select("absences").sort("createAt");
+
+    users.map((user) => {
+      return (user.absences = 0);
+    });
+
+    await users.map((user) => user.save());
+  })
+);
+
+// cron.schedule("* * * * *", () => {
+//   console.log("running a task every minute");
+// });
+
 export {
   authUser,
   getUserProfile,
@@ -307,4 +385,7 @@ export {
   searchUser,
   getRanks,
   updateNotification,
+  getAdmins,
+  leaveCreditsReport,
+  allUsersReport,
 };

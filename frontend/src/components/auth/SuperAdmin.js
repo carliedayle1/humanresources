@@ -1,12 +1,17 @@
 import React from "react";
-import { Nav, NavDropdown } from "react-bootstrap";
+import { NavDropdown } from "react-bootstrap";
 
 const SuperAdmin = () => {
   return (
     <>
-      <Nav.Link href='/admin/create' className='text-light'>
-        Create Admin
-      </Nav.Link>
+      <NavDropdown title={<span className='text-light'>Admin</span>} id='admin'>
+        <NavDropdown.Item href='/admin/create' className='text-light'>
+          Create Admin
+        </NavDropdown.Item>
+        <NavDropdown.Item href='/admin' className='text-light'>
+          Admin List
+        </NavDropdown.Item>
+      </NavDropdown>
       <NavDropdown
         title={<span className='text-light'>Reports</span>}
         id='employee'

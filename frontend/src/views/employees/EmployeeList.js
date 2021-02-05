@@ -91,7 +91,7 @@ const EmployeeList = ({ history }) => {
                     <th>Name</th>
                     <th>Email</th>
                     <th>College</th>
-                    <th>Position</th>
+                    <th>Position Type</th>
                     <th>Actions</th>
                   </tr>
                 </thead>

@@ -57,7 +57,7 @@ const EmployeeCreate = ({ history }) => {
         lastname: lastname.toString().toUpperCase(),
         email,
         college: college.toString().toUpperCase(),
-        position: position.toString().toUpperCase(),
+        position: Number(position),
         rank: rank.toString().toUpperCase(),
         dateHired,
         password: lastname.toString().toUpperCase(),
@@ -144,14 +144,18 @@ const EmployeeCreate = ({ history }) => {
                   />
                 </Col>
                 <Form.Label column sm='2'>
-                  Position:
+                  Position Type:
                 </Form.Label>
-                <Col sm='4'>
-                  <Form.Control
-                    value={position}
+                <Col sm={4}>
+                  <select
+                    className='form-control'
+                    id='position'
                     onChange={(e) => setPosition(e.target.value)}
-                    className='text-white'
-                  />
+                  >
+                    <option value='1'>1</option>
+                    <option value='2'>2</option>
+                    <option value='3'>3</option>
+                  </select>
                 </Col>
               </Form.Group>
 

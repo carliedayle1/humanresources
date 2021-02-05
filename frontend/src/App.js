@@ -21,6 +21,7 @@ import CreateEvaluation from "./views/evaluation/CreateEvaluation";
 import EvaluationHistory from "./views/evaluation/EvaluationHistory";
 import EvaluationRatingsHistory from "./views/evaluation/EvaluationRatingsHistory";
 import Rating from "./views/evaluation/Rating";
+import AdminList from "./views/superAdmin/AdminList";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
             <Route path='/profile' component={ProfileView} exact />
 
             <Route path='/admin/create' component={CreateAdmin} exact />
+            <Route path='/admin' component={AdminList} exact />
             <Route path='/employees' component={EmployeeList} exact />
             <Route path='/employees/create' component={EmployeeCreate} exact />
             <Route path='/employees/:id' component={EmployeeProfile} exact />

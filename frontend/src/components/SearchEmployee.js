@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Col, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Loader from "./Loader";
 import Message from "./Message";
 import { searchUser } from "../actions/userActions";
@@ -75,7 +76,10 @@ const SearchEmployee = () => {
               <h5>ID Number:</h5>
             </Col>
             <Col sm={4}>
-              <h5>{user && user.idNumber ? user.idNumber : ""}</h5>
+              <Link to={`/employees/${user._id}`}>
+                {" "}
+                <h5>{user && user.idNumber ? user.idNumber : ""}</h5>{" "}
+              </Link>
             </Col>
             <Col sm={2}>
               <h5>Position:</h5>

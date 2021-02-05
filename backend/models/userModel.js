@@ -48,7 +48,7 @@ const userSchema = mongoose.Schema(
       default: false,
     },
     position: {
-      type: String,
+      type: Number,
     },
     rank: {
       type: String,

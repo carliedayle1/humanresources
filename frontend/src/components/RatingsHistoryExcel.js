@@ -28,7 +28,10 @@ const RatingsHistoryExcel = () => {
         >
           <ExcelSheet data={ratings} name='Leave Credits History'>
             <ExcelColumn label='ID Number' value={(col) => col.user.idNumber} />
-            <ExcelColumn label='Name' value={(col) => col.user.name} />
+            <ExcelColumn
+              label='Name'
+              value={(col) => `${col.user.lastname}, ${col.user.firstname}`}
+            />
             <ExcelColumn
               label='Educational Qualification'
               value='educationalQualification'

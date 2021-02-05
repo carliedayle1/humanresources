@@ -31,6 +31,8 @@ const protect = asyncHandler(async (req, res, next) => {
 const admin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
+  } else if (req.user && req.user.isSuperAdmin) {
+    next();
   } else {
     res.status(401);
     throw new Error("You are not authorized to access this content");

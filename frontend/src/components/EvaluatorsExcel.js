@@ -25,7 +25,9 @@ const EvaluatorsExcel = () => {
         >
           <ExcelSheet data={evaluators} name='Employee leave credits'>
             <ExcelColumn label='ID Number' value='idNumber' />
-            <ExcelColumn label='Name' value='name' />
+            <ExcelColumn label='Firstname' value='firstname' />
+            <ExcelColumn label='Middlename' value='middlename' />
+            <ExcelColumn label='Lastname' value='lastname' />
             <ExcelColumn label='Email' value='email' />
           </ExcelSheet>
         </ExcelFile>

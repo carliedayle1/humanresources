@@ -115,6 +115,10 @@ const createEvaluation = asyncHandler(async (req, res) => {
         message: "Rank updated",
       });
 
+      user.evalPoints = Number(
+        Number(user.evalPoints) + Number(total) + Number(qce)
+      );
+
       await user.save();
 
       await Rank.create({ name: evaluation.rank, user: userId });

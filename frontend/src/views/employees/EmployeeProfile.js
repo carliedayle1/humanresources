@@ -103,6 +103,17 @@ const EmployeeProfile = ({ history, match }) => {
   //     setShowRank(!showRank);
   //   };
 
+  const calculateYearsOfService = () => {
+    const hired = dayjs(dateHired).valueOf();
+    const today = dayjs().valueOf();
+
+    const total = today - hired;
+
+    // const h = new Date(dateHired).getTime();
+
+    return Math.floor(total / 31536000000);
+  };
+
   return (
     <div style={{ marginTop: "8%" }}>
       <Card>
@@ -275,8 +286,8 @@ const EmployeeProfile = ({ history, match }) => {
                     <Col sm='4'>
                       <Form.Control
                         type='text'
-                        value={dateHired}
-                        onChange={(e) => setDateHired(e.target.value)}
+                        value={calculateYearsOfService()}
+                        // onChange={(e) => setDateHired(e.target.value)}
                         disabled
                         className='text-white'
                       />

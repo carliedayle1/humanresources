@@ -12,6 +12,9 @@ import {
   searchUser,
   getRanks,
   updateNotification,
+  getAdmins,
+  leaveCreditsReport,
+  allUsersReport,
 } from "../controllers/userController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
@@ -25,6 +28,10 @@ router
   .route("/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
+
+router.route("/admins").get(protect, admin, getAdmins);
+router.route("/leaveCredits").get(protect, admin, leaveCreditsReport);
+router.route("/all").get(protect, admin, allUsersReport);
 
 router
   .route("/:id")

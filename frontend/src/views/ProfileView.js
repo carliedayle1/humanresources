@@ -131,6 +131,17 @@ const Profile = ({ history }) => {
     dispatch,
   ]);
 
+  const calculateYearsOfService = () => {
+    const hired = dayjs(dateHired).valueOf();
+    const today = dayjs().valueOf();
+
+    const total = today - hired;
+
+    // const h = new Date(dateHired).getTime();
+
+    return Math.floor(total / 31536000000);
+  };
+
   const fileSubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -302,7 +313,7 @@ const Profile = ({ history }) => {
                       />
                     </Col>
                     <Form.Label column sm='2'>
-                      Position:
+                      Position Type:
                     </Form.Label>
                     <Col sm='4'>
                       <Form.Control
@@ -388,8 +399,8 @@ const Profile = ({ history }) => {
                     <Col sm='4'>
                       <Form.Control
                         type='text'
-                        value={dateHired}
-                        onChange={(e) => setDateHired(e.target.value)}
+                        value={calculateYearsOfService()}
+                        // onChange={(e) => setDateHired(e.target.value)}
                         disabled
                         className='text-white'
                       />
@@ -510,7 +521,7 @@ const Profile = ({ history }) => {
 
             {loadingDocuments ? (
               <Loader />
-            ) : documents.length === 0 || documents === undefined ? (
+            ) : documents === undefined || documents.length === 0 ? (
               <div className='mt-3'>
                 <Message variant='danger'>
                   You have no uploaded documents yet..

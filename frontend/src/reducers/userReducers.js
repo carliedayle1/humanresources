@@ -55,6 +55,14 @@ import {
   USER_NOTIFICATION_REQUEST,
   USER_NOTIFICATION_SUCCESS,
   USER_NOTIFICATION_FAIL,
+  USER_ADMINS_REQUEST,
+  USER_ADMINS_SUCCESS,
+  USER_ADMINS_FAIL,
+  USER_ADMINS_RESET,
+  USER_ALL_REQUEST,
+  USER_ALL_SUCCESS,
+  USER_ALL_FAIL,
+  USER_ALL_RESET,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -277,6 +285,36 @@ export const userUpdateNotificationReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case USER_NOTIFICATION_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userAdminsReducer = (state = { admins: [] }, action) => {
+  switch (action.type) {
+    case USER_ADMINS_REQUEST:
+      return { loading: true };
+    case USER_ADMINS_SUCCESS:
+      return { loading: false, admins: action.payload };
+    case USER_ADMINS_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_ADMINS_RESET:
+      return { admins: [] };
+    default:
+      return state;
+  }
+};
+
+export const usersAllReportReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case USER_ALL_REQUEST:
+      return { loading: true };
+    case USER_ALL_SUCCESS:
+      return { loading: false, users: action.payload };
+    case USER_ALL_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_ALL_RESET:
+      return { users: [] };
     default:
       return state;
   }

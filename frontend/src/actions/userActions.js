@@ -64,6 +64,14 @@ import {
   USER_NOTIFICATION_SUCCESS,
   USER_NOTIFICATION_FAIL,
   USER_SEARCH_RESET,
+  USER_ADMINS_RESET,
+  USER_ADMINS_REQUEST,
+  USER_ADMINS_SUCCESS,
+  USER_ADMINS_FAIL,
+  USER_ALL_RESET,
+  USER_ALL_FAIL,
+  USER_ALL_REQUEST,
+  USER_ALL_SUCCESS,
 } from "../constants/userConstants";
 
 export const login = (idNumber, password) => async (dispatch) => {
@@ -159,6 +167,10 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: EVALUATION_RATINGS_ALL_RESET,
   });
+
+  dispatch({ type: USER_ADMINS_RESET });
+
+  dispatch({ type: USER_ALL_RESET });
 };
 
 export const registerUser = (user) => async (dispatch, getState) => {
@@ -630,6 +642,74 @@ export const updateNotification = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_NOTIFICATION_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getAdmins = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_ADMINS_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/admins`, config);
+
+    dispatch({
+      type: USER_ADMINS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_ADMINS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getAllUsersReport = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_ALL_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/all`, config);
+
+    dispatch({
+      type: USER_ALL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_ALL_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

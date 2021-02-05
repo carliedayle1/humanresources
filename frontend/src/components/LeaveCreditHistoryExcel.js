@@ -25,7 +25,10 @@ const LeaveCreditHistoryExcel = () => {
         >
           <ExcelSheet data={leaveCredits} name='Leave Credits History'>
             <ExcelColumn label='ID Number' value={(col) => col.user.idNumber} />
-            <ExcelColumn label='Name' value={(col) => col.user.name} />
+            <ExcelColumn
+              label='Name'
+              value={(col) => `${col.user.lastname}, ${col.user.firstname}`}
+            />
             <ExcelColumn label='Type' value='type' />
             <ExcelColumn label='Particular' value='particular' />
             <ExcelColumn label='Earned' value='earned' />
