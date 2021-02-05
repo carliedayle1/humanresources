@@ -8,22 +8,24 @@ const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
-const UsersAllReportExcel = () => {
-  const usersAllReport = useSelector((state) => state.usersAllReport);
-  const { users } = usersAllReport;
+const AllCreditsReportExcel = () => {
+  const usersAllCreditsReport = useSelector(
+    (state) => state.usersAllCreditsReport
+  );
+  const { leaveCredits } = usersAllCreditsReport;
 
   return (
     <>
-      {users && users.length > 0 && (
+      {leaveCredits && leaveCredits.length > 0 && (
         <ExcelFile
           element={
             <Button variant='success' className='btn btn-lg'>
-              All Accounts to Excel
+              All leave credits to Excel
             </Button>
           }
-          filename={`All Accounts - ${dayjs().format("MM/DD/YYYY")}`}
+          filename={`All leave credits - ${dayjs().format("MM/DD/YYYY")}`}
         >
-          <ExcelSheet data={users} name='Leave Credits History'>
+          <ExcelSheet data={leaveCredits} name='Leave Credits History'>
             <ExcelColumn label='ID Number' value={(col) => col.idNumber} />
             <ExcelColumn
               label='Name'
@@ -31,19 +33,13 @@ const UsersAllReportExcel = () => {
                 `${col.lastname}, ${col.firstname} ${col.middlename}`
               }
             />
+            <ExcelColumn
+              label='Total Leave Credits'
+              value={(col) => col.leaveCredits}
+            />
             <ExcelColumn label='Email' value='email' />
             <ExcelColumn label='Position Type' value='position' />
             <ExcelColumn label='Campus' value='campus' />
-            <ExcelColumn label='Total Evaluation Points' value='evalPoints' />
-            <ExcelColumn
-              label='Years of Service'
-              value={(col) =>
-                Math.floor(
-                  (dayjs().valueOf - dayjs(col.dateHired).valueOf()) /
-                    31536000000
-                )
-              }
-            />
             <ExcelColumn
               label='Date Hired'
               value={(col) => dayjs(col.dateHired).format("MMMM D, YYYY")}
@@ -55,4 +51,4 @@ const UsersAllReportExcel = () => {
   );
 };
 
-export default UsersAllReportExcel;
+export default AllCreditsReportExcel;

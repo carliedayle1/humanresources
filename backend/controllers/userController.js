@@ -315,7 +315,9 @@ const getAdmins = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const leaveCreditsReport = asyncHandler(async (req, res) => {
   const users = await User.find()
-    .select("leaveCredits firstname middlename lastname position")
+    .select(
+      "leaveCredits firstname middlename lastname position campus idNumber"
+    )
     .sort("leaveCredits position");
 
   res.json(users);

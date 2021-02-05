@@ -72,6 +72,10 @@ import {
   USER_ALL_FAIL,
   USER_ALL_REQUEST,
   USER_ALL_SUCCESS,
+  USER_LEAVE_CREDITS_ALL_RESET,
+  USER_LEAVE_CREDITS_ALL_REQUEST,
+  USER_LEAVE_CREDITS_ALL_SUCCESS,
+  USER_LEAVE_CREDITS_ALL_FAIL,
 } from "../constants/userConstants";
 
 export const login = (idNumber, password) => async (dispatch) => {
@@ -138,6 +142,10 @@ export const logout = () => (dispatch) => {
 
   dispatch({
     type: EVALUATION_RATING_LIST_RESET,
+  });
+
+  dispatch({
+    type: USER_LEAVE_CREDITS_ALL_RESET,
   });
 
   dispatch({
@@ -710,6 +718,40 @@ export const getAllUsersReport = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_ALL_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getAllCreditsReport = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_LEAVE_CREDITS_ALL_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/leaveCredits`, config);
+
+    dispatch({
+      type: USER_LEAVE_CREDITS_ALL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_LEAVE_CREDITS_ALL_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

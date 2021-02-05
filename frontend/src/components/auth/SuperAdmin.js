@@ -1,5 +1,5 @@
 import React from "react";
-import { NavDropdown } from "react-bootstrap";
+import { NavDropdown, Nav } from "react-bootstrap";
 
 const SuperAdmin = () => {
   return (
@@ -12,17 +12,9 @@ const SuperAdmin = () => {
           Admin List
         </NavDropdown.Item>
       </NavDropdown>
-      <NavDropdown
-        title={<span className='text-light'>Reports</span>}
-        id='employee'
-      >
-        <NavDropdown.Item href='/employees/report' className='text-light'>
-          Employees
-        </NavDropdown.Item>
-        <NavDropdown.Item href='/leavecredits/report' className='text-light'>
-          Leave Credits
-        </NavDropdown.Item>
-      </NavDropdown>
+      <Nav.Link href='/admin/reports' className='text-light'>
+        Reports
+      </Nav.Link>
 
       {/* <Nav.Link className='text-light'>Logout</Nav.Link> */}
     </>

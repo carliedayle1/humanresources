@@ -19,6 +19,7 @@ import {
   userUpdateNotificationReducer,
   userAdminsReducer,
   usersAllReportReducer,
+  usersAllCreditsReportReducer,
 } from "./reducers/userReducers";
 
 import {
@@ -67,6 +68,7 @@ const reducer = combineReducers({
   evaluationRatingsListAll: evaluationRatingsListAllReducer,
   userAdmins: userAdminsReducer,
   usersAllReport: usersAllReportReducer,
+  usersAllCreditsReport: usersAllCreditsReportReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

@@ -63,6 +63,10 @@ import {
   USER_ALL_SUCCESS,
   USER_ALL_FAIL,
   USER_ALL_RESET,
+  USER_LEAVE_CREDITS_ALL_REQUEST,
+  USER_LEAVE_CREDITS_ALL_SUCCESS,
+  USER_LEAVE_CREDITS_ALL_FAIL,
+  USER_LEAVE_CREDITS_ALL_RESET,
 } from "../constants/userConstants";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -315,6 +319,24 @@ export const usersAllReportReducer = (state = { users: [] }, action) => {
       return { loading: false, error: action.payload };
     case USER_ALL_RESET:
       return { users: [] };
+    default:
+      return state;
+  }
+};
+
+export const usersAllCreditsReportReducer = (
+  state = { leaveCredits: [] },
+  action
+) => {
+  switch (action.type) {
+    case USER_LEAVE_CREDITS_ALL_REQUEST:
+      return { loading: true };
+    case USER_LEAVE_CREDITS_ALL_SUCCESS:
+      return { loading: false, leaveCredits: action.payload };
+    case USER_LEAVE_CREDITS_ALL_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_LEAVE_CREDITS_ALL_RESET:
+      return { leaveCredits: [] };
     default:
       return state;
   }
