@@ -1,7 +1,6 @@
 import asyncHandler from "express-async-handler";
 import LeaveCredit from "../models/leaveCreditModel.js";
 import User from "../models/userModel.js";
-import dayjs from "dayjs";
 
 // @desc    Create a leave credit
 // @route   POST /api/leavecredits/:id

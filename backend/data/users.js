@@ -17,7 +17,7 @@ const users = [
     isSuperAdmin: true,
   },
   {
-    userType: 1,
+    userType: 5,
     idNumber: "11111",
     firstname: "JOHN",
     middlename: "KENNEDY",
@@ -36,7 +36,7 @@ const users = [
   },
 
   {
-    userType: 1,
+    userType: 5,
     idNumber: "22222",
     firstname: "JOSEPH",
     middlename: "KENNEDY",
@@ -50,7 +50,7 @@ const users = [
   },
 
   {
-    userType: 1,
+    userType: 5,
     idNumber: "33333",
     firstname: "JERRY",
     middlename: "KENNEDY",

@@ -28,7 +28,7 @@ const createEvaluationRating = asyncHandler(async (req, res) => {
 
     admins.map((user) => {
       return user.notifications.push({
-        url: "/evaluation",
+        url: "/evaluations/create",
         message: `Evaluation rating submitted by ${evaluator}`,
       });
     });

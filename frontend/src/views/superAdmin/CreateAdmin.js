@@ -49,8 +49,6 @@ const CreateAdmin = ({ history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    console.log(campus.split(" ")[1]);
-
     dispatch(
       registerUser({
         idNumber,

@@ -4,6 +4,7 @@ import SignOut from "./auth/SignOut";
 import Evaluator from "./auth/Evaluator";
 import SuperAdmin from "./auth/SuperAdmin";
 import SignIn from "./auth/SignIn";
+import Notifications from "../components/Notifications";
 
 import { Container, Navbar, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -24,7 +25,9 @@ const Header = () => {
               {userInfo && userInfo.isSuperAdmin && <SuperAdmin />}
               {userInfo && userInfo.isAdmin && <Admin />}
               {userInfo && userInfo.isEvaluator && <Evaluator />}
+              {userInfo && <Notifications id={userInfo._id} />}
               {userInfo ? <SignIn /> : <SignOut />}
+
               {/* <SignIn />
               <SignOut /> */}
             </Nav>
@@ -42,7 +45,6 @@ export default Header;
 // import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 // import { LinkContainer } from "react-router-bootstrap";
 // import { logout } from "../actions/userActions";
-// import Notifications from "../components/Notifications";
 
 // const Header = () => {
 //   const dispatch = useDispatch();
@@ -66,7 +68,6 @@ export default Header;
 //             <Nav className='ml-auto'>
 //               {userInfo ? (
 //                 <>
-//                   <Notifications id={userInfo._id} />
 //                   <NavDropdown title={userInfo.name} id='username'>
 //                     <LinkContainer to='/profile'>
 //                       <NavDropdown.Item>Profile</NavDropdown.Item>

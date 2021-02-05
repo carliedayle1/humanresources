@@ -70,6 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
     dateHired,
     userType,
     program,
+    campus,
   } = req.body;
 
   // console.log(req.body);
@@ -91,6 +92,7 @@ const registerUser = asyncHandler(async (req, res) => {
     college,
     position,
     rank,
+    campus,
     password,
     isAdmin,
     userType: userType || req.user.userType,

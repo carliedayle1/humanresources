@@ -126,6 +126,12 @@ const Rating = ({ history }) => {
           </div>
         </Card.Body>
       </Card>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   );
 };
