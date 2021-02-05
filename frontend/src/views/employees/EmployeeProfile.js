@@ -1,52 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
+// import { Link } from "react-router-dom";
+import { Form, Button, Row, Col, Card, Table } from "react-bootstrap";
+import Message from "../../components/Message";
+import Loader from "../../components/Loader";
 import {
+  //   getUserRanks,
+  getEmployeeDocuments,
   getUserDetails,
-  userUploadDoc,
-  getUserDocuments,
-  deleteDocument,
-  userUpdateProfileDetails,
-} from "../actions/userActions";
-// import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
-import { app } from "../base";
+} from "../../actions/userActions";
 import dayjs from "dayjs";
 
-import { Card, Form, Button, Table, Modal, Col, Row } from "react-bootstrap";
-import Swal from "sweetalert2";
-import Message from "../components/Message";
-import Loader from "../components/Loader";
+const EmployeeProfile = ({ history, match }) => {
+  const empId = match.params.id;
 
-const Profile = ({ history }) => {
+  const oldUser = useRef();
   const dispatch = useDispatch();
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
 
-  const userDetails = useSelector((state) => state.userDetails);
-  const { user, loading, error } = userDetails;
-
-  const userUploadDocument = useSelector((state) => state.userUploadDocument);
-  const {
-    loading: loadingDoc,
-    error: errorDoc,
-    success: successDoc,
-  } = userUploadDocument;
-
-  const userDocumentList = useSelector((state) => state.userDocumentList);
-  const {
-    documents,
-    loading: loadingDocuments,
-    error: errorDocuments,
-  } = userDocumentList;
-
-  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const {
-    loading: loadingUpdate,
-    error: errorUpdate,
-    success: successUpdate,
-  } = userUpdateProfile;
-
-  const userDeleteDocument = useSelector((state) => state.userDeleteDocument);
-  const { success: successDelete, error: errorDelete } = userDeleteDocument;
+  //   const [showRank, setShowRank] = useState(false);
 
   const [idNumber, setIdNumber] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -62,24 +33,39 @@ const Profile = ({ history }) => {
   const [evalPoints, setEvalPoints] = useState("");
   const [absences, setAbsences] = useState("");
   const [program, setProgram] = useState("");
-  // eslint-disable-next-line
-  const [password, setPassword] = useState("");
-  // eslint-disable-next-line
-  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [show, setShow] = useState(false);
-  const [type, setType] = useState("NBC");
-  const [message, setMessage] = useState("");
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const userDetails = useSelector((state) => state.userDetails);
+  const { user, loading, error } = userDetails;
+
+  //   const userRank = useSelector((state) => state.userRank);
+  //   const { ranks, loading: loadingRanks, error: errorRanks } = userRank;
+
+  const userDocuments = useSelector((state) => state.userDocuments);
+  const {
+    documents,
+    loading: loadingDocuments,
+    error: errorDocuments,
+  } = userDocuments;
+
+  if (error) {
+    history.push("/employees");
+  }
 
   useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
+    if (!userInfo && !userInfo.isAdmin) {
+      history.push("/");
     } else {
-      if (!user || Object.keys(user).length === 0) {
-        dispatch(getUserDetails("profile"));
+      if (
+        !user ||
+        user._id === undefined ||
+        Object.keys(user).length === 0 ||
+        oldUser.current !== empId
+      ) {
+        dispatch(getUserDetails(empId));
+        oldUser.current = empId;
       } else {
         setIdNumber(user.idNumber);
         setFirstname(user.firstname);
@@ -95,138 +81,39 @@ const Profile = ({ history }) => {
         setAbsences(user.absences);
         setEvalPoints(user.evalPoints);
         setProgram(user.program);
+        // setName(user.name);
+        // setIdNumber(user.idNumber);
+        // setEmail(user.email);
+        // setPosition(user.position);
+        // setRank(user.rank);
+        // setDateHired(dayjs(user.dataHired).format("MMMM D, YYYY"));
+        // setCredits(user.leaveCredits);
+        // setCampus(user.campus);
+        // setCollege(user.college);
+        // console.log(user.leaveCredits);
+
+        // dispatch(getUserRanks(empId));
+        dispatch(getEmployeeDocuments(empId));
       }
-
-      dispatch(getUserDocuments());
-
-      // eslint-disable-next-line
-      // if (user && user.idNumber) {
-      // }
-      // if (!user || !user.name || successUpdate) {
-      //   dispatch({ type: USER_UPDATE_PROFILE_RESET });
-      //   // dispatch(getUserDetails("profile"));
-
-      //   if (successUpdate) {
-      //     Swal.fire({
-      //       position: "top-end",
-      //       icon: "success",
-      //       title: "Changes has been saved",
-      //       showConfirmButton: false,
-      //       timer: 1500,
-      //     });
-      //   }
-      // } else {
-      //   console.log("else");
-      // }
     }
     // eslint-disable-next-line
-  }, [
-    history,
-    userInfo,
-    successDoc,
-    user,
-    successUpdate,
-    successDoc,
-    successDelete,
-    dispatch,
-  ]);
+  }, [userInfo, history, dispatch, user]);
 
-  const fileSubmitHandler = async (e) => {
-    e.preventDefault();
-
-    const file = e.target.docFile.files[0];
-
-    if (
-      file.type ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-      file.type ===
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-      file.type === "application/pdf" ||
-      file.type === "application/vnd.ms-excel"
-    ) {
-      const storageRef = app.storage().ref();
-      const fileRef = storageRef.child(file.name);
-      await fileRef.put(file);
-      const fileUrl = await fileRef.getDownloadURL();
-
-      dispatch(
-        userUploadDoc({
-          name: file.name,
-          type: type,
-          url: fileUrl,
-          userId: user._id,
-        })
-      );
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Your document has been saved",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-
-      handleClose();
-    } else {
-      setMessage("Only .docx, .xls, .xlsx and .pdf file are allowed..");
-      return;
-    }
-  };
-
-  const deleteHandler = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(deleteDocument(id));
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    setMessage("");
-    if (password === confirmPassword) {
-      dispatch(userUpdateProfileDetails({ password }));
-      setPassword("");
-      setConfirmPassword("");
-      setMessage("");
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Changes has been saved",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    } else {
-      setMessage("Passwords do not match..");
-      setPassword("");
-      setConfirmPassword("");
-      return;
-    }
-  };
+  //   const showRankHandler = () => {
+  //     setShowRank(!showRank);
+  //   };
 
   return (
     <div style={{ marginTop: "8%" }}>
       <Card>
         <Card.Body>
-          <h1 className='text-light'>Profile</h1>
+          <h1 className='text-light'>Employee Profile</h1>
           <hr className='bg-light' />
 
           <div className='px-5'>
             <h4 className='text-light'>Personal Information</h4>
 
-            {error && (
-              <div className='my-3'>
-                <Message>{error}</Message>
-              </div>
-            )}
+            {error && <Message>{error}</Message>}
 
             {loading ? (
               <div className='my-3'>
@@ -234,7 +121,7 @@ const Profile = ({ history }) => {
               </div>
             ) : (
               <div>
-                <Form className='text-light' onSubmit={submitHandler}>
+                <Form className='text-light'>
                   <Form.Group as={Row}>
                     <Form.Label column sm='2'>
                       ID Number:
@@ -435,50 +322,14 @@ const Profile = ({ history }) => {
                     </Col>
                   </Form.Group>
 
-                  <Form.Group as={Row}>
-                    <Form.Label column sm='2'>
-                      Password:
-                    </Form.Label>
-                    <Col sm='4'>
-                      <Form.Control
-                        type='password'
-                        onChange={(e) => setPassword(e.target.value)}
-                        className='text-black'
-                      />
-                    </Col>
-                    <Form.Label column sm='2'>
-                      Confirm Password:
-                    </Form.Label>
-                    <Col sm='4'>
-                      <Form.Control
-                        type='password'
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className='text-black'
-                      />
-                    </Col>
-                  </Form.Group>
-                  {message && (
-                    <div className='mt-3 px-5'>
-                      <Message>{message}</Message>
-                    </div>
-                  )}
-                  {errorUpdate && (
-                    <div className='mt-3 px-5'>
-                      <Message>{errorUpdate}</Message>
-                    </div>
-                  )}
-                  {loadingUpdate ? (
-                    <Loader />
-                  ) : (
-                    <div className='text-center'>
+                  {/* <div className='text-center'>
                       <Button
                         type='submit'
                         className='btn btn-lg btn-info shadow-lg'
                       >
                         Update
                       </Button>
-                    </div>
-                  )}
+                    </div> */}
                 </Form>
               </div>
             )}
@@ -488,23 +339,17 @@ const Profile = ({ history }) => {
           <div className='px-5'>
             <div className='d-flex justify-content-between text-light'>
               <h4>Documents</h4>
-              <Button
+              {/* <Button
                 className='btn btn-lg btn-success shadow-lg'
                 onClick={handleShow}
               >
                 Upload document
-              </Button>
+              </Button> */}
             </div>
 
             {errorDocuments && (
               <div className='mt-3'>
                 <Message>{errorDocuments}</Message>
-              </div>
-            )}
-
-            {errorDelete && (
-              <div className='my-3'>
-                <Message>{errorDelete}</Message>
               </div>
             )}
 
@@ -534,7 +379,7 @@ const Profile = ({ history }) => {
                         <td>{doc.type}</td>
                         <td>{dayjs(doc.createdAt).format("MMMM D, YYYY")}</td>
                         <td>
-                          {/* <a
+                          <a
                             href={doc.url}
                             download={doc.url}
                             target='_blank'
@@ -544,14 +389,14 @@ const Profile = ({ history }) => {
                             <Button className='btn btn-sm btn-primary mr-2'>
                               Download
                             </Button>
-                          </a> */}
+                          </a>
 
-                          <Button
+                          {/* <Button
                             onClick={() => deleteHandler(doc._id)}
                             className='btn btn-sm btn-danger'
                           >
                             Delete
-                          </Button>
+                          </Button> */}
                         </td>
                       </tr>
                     );
@@ -563,7 +408,7 @@ const Profile = ({ history }) => {
         </Card.Body>
       </Card>
 
-      <Modal show={show} onHide={handleClose} centered>
+      {/* <Modal show={show} onHide={handleClose} centered>
         <Modal.Header closeButton className='text-light'>
           <Modal.Title>Upload Document</Modal.Title>
         </Modal.Header>
@@ -616,13 +461,214 @@ const Profile = ({ history }) => {
             </div>
           </Form>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
 
       <br />
       <br />
       <br />
     </div>
   );
+
+  //   return (
+  //     <>
+  //       <h1>Employee Profile</h1>
+  //       <Link to='/employees'>
+  //         {" "}
+  //         <Button variant='outline-info' className='my-3'>
+  //           Go back
+  //         </Button>
+  //       </Link>
+  //       {error && <Message variant='danger'>{error}</Message>}
+
+  //       {loading ? (
+  //         <Loader />
+  //       ) : (
+  //         <Container className='bg-light rounded shadow-lg p-4'>
+  //           <h3>Personal Information</h3>
+
+  //           <Row className='my-3 px-4'>
+  //             <Col sm={12} md={6}>
+  //               <Card body className='bg-info shadow text-light '>
+  //                 <Row>
+  //                   <Col md={4}>
+  //                     <h5>ID Number:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{idNumber}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                   <Col md={4}>
+  //                     <h5>Name:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{name}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                   <Col md={4}>
+  //                     <h5>Email:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{email}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                   <Col md={4}>
+  //                     <h5>Position:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{position}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                   <Col md={4}>
+  //                     <h5>Rank:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{rank}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                 </Row>
+  //               </Card>
+  //             </Col>
+
+  //             <Col sm={12} md={6}>
+  //               <Card body className='bg-secondary shadow text-light '>
+  //                 <Row>
+  //                   <Col md={4}>
+  //                     <h5>Date Hired:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{dayjs(dateHired).format("MMMM D, YYYY")}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                   <Col md={4}>
+  //                     <h5>Total Leave Credits:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{credits}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                   <Col md={4}>
+  //                     <h5>Campus:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{campus}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                   <Col md={4}>
+  //                     <h5>College:</h5>
+  //                   </Col>
+  //                   <Col md={8}>
+  //                     <h5>
+  //                       <strong>{college}</strong>
+  //                     </h5>
+  //                   </Col>
+  //                 </Row>
+  //               </Card>
+  //             </Col>
+  //           </Row>
+
+  //           <Button variant='outline-warning' onClick={showRankHandler}>
+  //             {" "}
+  //             View previous rank
+  //           </Button>
+
+  //           {showRank && (
+  //             <Row className='my-3 p-4'>
+  //               <Col md={7}>
+  //                 {errorRanks && <Message variant='danger'>{errorRanks}</Message>}
+
+  //                 <Card body className='bg-primary'>
+  //                   {loadingRanks ? (
+  //                     <Loader />
+  //                   ) : (
+  //                     <Table
+  //                       striped
+  //                       borderless
+  //                       hover
+  //                       responsive
+  //                       variant='light'
+  //                       size='sm'
+  //                       className='rounded-lg mb-0'
+  //                     >
+  //                       <thead>
+  //                         <tr>
+  //                           <th>Rank Name</th>
+  //                           <th>Date Verified</th>
+  //                         </tr>
+  //                       </thead>
+  //                       <tbody>
+  //                         {ranks.map((rank) => {
+  //                           return (
+  //                             <tr key={rank._id}>
+  //                               <td>{rank.name}</td>
+  //                               <td>
+  //                                 {dayjs(rank.createdAt).format("MMMM D, YYYY")}
+  //                               </td>
+  //                             </tr>
+  //                           );
+  //                         })}
+  //                       </tbody>
+  //                     </Table>
+  //                   )}
+  //                 </Card>
+  //               </Col>
+  //             </Row>
+  //           )}
+
+  //           <hr className='my-3' />
+  //           <h4>Documents</h4>
+
+  //           {errorDocuments && (
+  //             <Message variant='danger'>{errorDocuments}</Message>
+  //           )}
+
+  //           {loadingDocuments ? (
+  //             <Loader />
+  //           ) : (
+  //             <Row className='my-3 px-4'>
+  //               <Col>
+  //                 <Table
+  //                   striped
+  //                   borderless
+  //                   hover
+  //                   responsive
+  //                   variant='dark'
+  //                   size='sm'
+  //                   className='rounded-lg'
+  //                 >
+  //                   <thead>
+  //                     <tr>
+  //                       <th>Document Name</th>
+  //                       <th>Type</th>
+  //                       <th>Date Uploaded</th>
+  //                     </tr>
+  //                   </thead>
+  //                   <tbody>
+  //                     {documents.map((doc) => {
+  //                       return (
+  //                         <tr key={doc._id}>
+  //                           <td>{doc.name}</td>
+  //                           <td>{doc.type}</td>
+  //                           <td>{dayjs(doc.createdAt).format("MMMM D, YYYY")}</td>
+  //                         </tr>
+  //                       );
+  //                     })}
+  //                   </tbody>
+  //                 </Table>
+  //               </Col>
+  //             </Row>
+  //           )}
+  //         </Container>
+  //       )}
+  //     </>
+  //   );
 };
 
-export default Profile;
+export default EmployeeProfile;

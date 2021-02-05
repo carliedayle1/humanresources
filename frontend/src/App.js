@@ -30,6 +30,7 @@ import ProfileView from "./views/ProfileView";
 import CreateAdmin from "./views/superAdmin/CreateAdmin";
 import EmployeeList from "./views/employees/EmployeeList";
 import EmployeeCreate from "./views/employees/EmployeeCreate";
+import EmployeeProfile from "./views/employees/EmployeeProfile";
 import CreateLeaveCredit from "./views/leaveCredits/CreateLeaveCredit";
 import LeaveCreditHistory from "./views/leaveCredits/LeaveCreditHistory";
 import CreateEvaluator from "./views/evaluation/CreateEvaluator";
@@ -53,6 +54,7 @@ const App = () => {
             <Route path='/admin/create' component={CreateAdmin} exact />
             <Route path='/employees' component={EmployeeList} exact />
             <Route path='/employees/create' component={EmployeeCreate} exact />
+            <Route path='/employees/:id' component={EmployeeProfile} exact />
             <Route
               path='/leavecredits/create'
               component={CreateLeaveCredit}
