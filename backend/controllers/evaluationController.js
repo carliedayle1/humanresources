@@ -9,7 +9,7 @@ import User from "../models/userModel.js";
 // @access  Private/Evaluator
 const createEvaluationRating = asyncHandler(async (req, res) => {
   const { userId, educ, acad, prof } = req.body;
-  const evaluator = req.user.name;
+  const evaluator = `${req.user.lastname}, ${req.user.firstname}`;
 
   const rating = await Rating.create({
     educationalQualification: educ,
@@ -92,7 +92,7 @@ const createEvaluation = asyncHandler(async (req, res) => {
       total,
       qce,
       rank,
-      verifiedBy: req.user.name,
+      verifiedBy: `${req.user.lastname}, ${req.user.firstname}`,
       verifyType: req.user.userType,
       user: userId,
     });
@@ -156,7 +156,7 @@ const getEvaluations = asyncHandler(async (req, res) => {
     verifyType: req.user.userType,
   })
     .sort("-createdAt")
-    .populate("user", "idNumber name");
+    .populate("user", "idNumber firstname lastname");
 
   if (evaluations) {
     res.json(evaluations);

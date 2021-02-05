@@ -83,7 +83,10 @@ const LoginView = ({ location, history }) => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
-
+                  <p>
+                    Note: Default password is your{" "}
+                    <strong>LASTNAME IN UPPERCASE</strong>
+                  </p>
                   {error && (
                     <div className='mt-3'>
                       <Message>{error}</Message>

@@ -133,6 +133,7 @@ const getUsers = asyncHandler(async (req, res) => {
     userType: req.user.userType,
     isEvaluator: false,
     isAdmin: false,
+    isSuperAdmin: false,
   }).sort("createAt");
 
   res.json(users);

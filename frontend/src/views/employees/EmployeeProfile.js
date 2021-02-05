@@ -55,7 +55,7 @@ const EmployeeProfile = ({ history, match }) => {
   }
 
   useEffect(() => {
-    if (!userInfo && !userInfo.isAdmin) {
+    if (!userInfo || !userInfo.isAdmin) {
       history.push("/");
     } else {
       if (

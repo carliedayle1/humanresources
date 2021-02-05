@@ -3,26 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-// import Sidebar from "./components/Sidebar";
-// import HomeScreen from "./screens/HomeScreen";
-// import LoginScreen from "./screens/LoginScreen";
-// import RegisterScreen from "./screens/RegisterScreen";
-// import UserListScreen from "./screens/UserListScreen";
-// import UserEditScreen from "./screens/UserEditScreen";
-// import UserProfileScreen from "./screens/UserProfileScreen";
-// import UserDocumentScreen from "./screens/UserDocumentScreen";
-// import LeaveCreditsScreen from "./screens/LeaveCreditsScreen";
-// import EvaluationScreen from "./screens/EvaluationScreen";
-// import CreateEvaluatorScreen from "./screens/CreateEvaluatorScreen";
-// import EvaluatorListScreen from "./screens/EvaluatorListScreen";
-// import LeaveCreditHistoryScreen from "./screens/LeaveCreditHistoryScreen";
-// import EvaluationHistoryScreen from "./screens/EvaluationHistoryScreen";
-// import EmployeeProfileScreen from "./screens/EmployeeProfileScreen";
-// import EvaluationRatingsHistoryScreen from "./screens/EvaluationRatingsHistoryScreen";
 
 //NEW VIEWS
-
-// import SampleScreen from "./screens/SampleScreen";
 
 import HomeView from "./views/HomeView";
 import LoginView from "./views/LoginView";

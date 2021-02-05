@@ -11,6 +11,7 @@ import Message from "../../components/Message";
 import Loader from "../../components/Loader";
 import SearchEmployee from "../../components/SearchEmployee";
 import LeaveCreditList from "../../components/LeaveCreditList";
+import dayjs from "dayjs";
 
 const CreateLeaveCredit = ({ history }) => {
   const dispatch = useDispatch();
@@ -38,8 +39,8 @@ const CreateLeaveCredit = ({ history }) => {
   const [showCredit, setShowCredit] = useState(false);
 
   useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push("/");
     } else {
       if (user && user._id) {
         dispatch(listUserLeaveCredits(user._id));
@@ -184,7 +185,7 @@ const CreateLeaveCredit = ({ history }) => {
 
           <div className='px-5'>
             <h5 className='text-light'>
-              As of <strong>February 2021</strong>{" "}
+              As of <strong>{dayjs().format("MMMM YYYY")}</strong>{" "}
             </h5>
 
             <SearchEmployee />

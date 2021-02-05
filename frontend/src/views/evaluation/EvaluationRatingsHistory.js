@@ -1,44 +1,80 @@
-import React from "react";
-import { Card, Button, Table } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { listEvaluationRatings } from "../../actions/evaluationActions";
+import Loader from "../../components/Loader";
+import Message from "../../components/Message";
+import RatingsHistoryExcel from "../../components/RatingsHistoryExcel";
+import dayjs from "dayjs";
+import { Card, Table } from "react-bootstrap";
 
-const EvaluationRatingsHistory = () => {
+const EvaluationRatingsHistory = ({ history }) => {
+  const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const evaluationRatingsList = useSelector(
+    (state) => state.evaluationRatingsList
+  );
+  const { loading, error, ratings } = evaluationRatingsList;
+
+  useEffect(() => {
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push("/");
+    } else {
+      dispatch(listEvaluationRatings());
+    }
+  }, [history, userInfo, dispatch]);
   return (
     <div style={{ marginTop: "8%" }}>
       <Card>
         <Card.Body className='text-light'>
           <div className='d-flex justify-content-between'>
             <h1>Evaluation Ratings History</h1>
-            <Button className='btn btn-success'>Download report</Button>
+            {ratings && ratings.length > 0 && <RatingsHistoryExcel />}
           </div>
           <hr className='bg-light' />
 
           <div className='px-5'>
-            <Table striped bordered size='sm' variant='dark' className='mt-3'>
-              <thead>
-                <tr>
-                  <th>ID Number</th>
-                  <th>Employee Name</th>
-                  <th>Educational Qualification</th>
-                  <th>Academic Experience</th>
-                  <th>Professional Achievement</th>
-                  <th>Verified</th>
-                  <th>Evaluated By</th>
-                  <th>Date Evaluated</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1234567890</td>
-                  <td>ERICK DAYLE LOON</td>
-                  <td>200</td>
-                  <td>100</td>
-                  <td>100</td>
-                  <td>YES</td>
-                  <td>ADMIN</td>
-                  <td>February 1, 2021</td>
-                </tr>
-              </tbody>
-            </Table>
+            {error && (
+              <div className='my-3'>
+                <Message>{error}</Message>
+              </div>
+            )}
+            {loading ? (
+              <Loader />
+            ) : (
+              <Table striped bordered variant='dark' size='sm' responsive>
+                <thead>
+                  <tr>
+                    <th>Id Number</th>
+                    <th>Employee Name</th>
+                    <th>Educational Qualification</th>
+                    <th>Academic Experience</th>
+                    <th>Professional Achievement</th>
+                    <th>Verified</th>
+                    <th>Evaluated By</th>
+                    <th>Date Evaluated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ratings.map((rating) => {
+                    return (
+                      <tr key={rating._id}>
+                        <td>{rating.user && rating.user.idNumber}</td>
+                        <td>{rating.user && rating.user.name}</td>
+                        <td>{rating.educationalQualification}</td>
+                        <td>{rating.academicExperience}</td>
+                        <td>{rating.professionalAchievement}</td>
+                        <td>{rating.verified ? "Yes" : "No"}</td>
+                        <td>{rating.evaluatedBy}</td>
+                        <td>{dayjs(rating.createdAt).format("MM-DD-YYYY")}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            )}
           </div>
         </Card.Body>
       </Card>

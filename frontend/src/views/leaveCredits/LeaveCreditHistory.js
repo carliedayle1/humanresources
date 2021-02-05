@@ -18,8 +18,8 @@ const LeaveCreditHistory = ({ history }) => {
   const { loading, error, leaveCredits } = leaveCreditList;
 
   useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push("/");
     } else {
       dispatch(listLeaveCredits());
     }

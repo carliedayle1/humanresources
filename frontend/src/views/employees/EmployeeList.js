@@ -28,8 +28,8 @@ const EmployeeList = ({ history }) => {
   } = userDelete;
 
   useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push("/");
     } else {
       dispatch(listUsers());
     }

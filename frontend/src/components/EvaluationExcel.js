@@ -21,7 +21,11 @@ const EvaluationExcel = ({ filename }) => {
     <>
       {evaluations.length > 0 && ratings.length > 0 && (
         <ExcelFile
-          element={<Button variant='info'>Export to Excel</Button>}
+          element={
+            <Button variant='success' className='btn btn-lg'>
+              Export to Excel
+            </Button>
+          }
           filename={filename}
         >
           <ExcelSheet data={evaluations} name='Employee Evaluations'>

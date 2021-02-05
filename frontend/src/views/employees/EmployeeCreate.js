@@ -29,8 +29,8 @@ const EmployeeCreate = ({ history }) => {
   const [dateHired, setDateHired] = useState("");
 
   useEffect(() => {
-    if (!userInfo) {
-      history.push("/login");
+    if (!userInfo || !userInfo.isAdmin) {
+      history.push("/");
     } else {
       if (success) {
         dispatch({ type: USER_REGISTER_RESET });
