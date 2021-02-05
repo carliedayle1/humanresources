@@ -51,10 +51,6 @@ const CreateLeaveCredit = ({ history }) => {
   const serviceSubmitHandler = (e) => {
     e.preventDefault();
     setMessage("");
-    if (particulars === "" || serviceEarned === 0) {
-      setMessage("Please provide an input..");
-      return;
-    }
 
     if (!user && !user._id) {
       setMessage("Please search for an employee..");
@@ -91,10 +87,6 @@ const CreateLeaveCredit = ({ history }) => {
   const vacationSubmitHandler = (e) => {
     e.preventDefault();
     setMessage("");
-    if (vacationEarned === 0) {
-      setMessage("Please provide an input..");
-      return;
-    }
 
     if (!user && !user._id) {
       setMessage("Please search for an employee..");
@@ -129,10 +121,6 @@ const CreateLeaveCredit = ({ history }) => {
   const sickSubmitHandler = (e) => {
     e.preventDefault();
     setMessage("");
-    if (sickEarned === 0) {
-      setMessage("Please provide an input..");
-      return;
-    }
 
     if (!user && !user._id) {
       setMessage("Please search for an employee..");
