@@ -33,7 +33,7 @@ const EmployeeList = ({ history }) => {
     } else {
       dispatch(listUsers());
     }
-  }, [userInfo, history, dispatch, successDelete, users]);
+  }, [userInfo, history, dispatch, successDelete]);
 
   const deleteHandler = (id) => {
     Swal.fire({
@@ -67,7 +67,11 @@ const EmployeeList = ({ history }) => {
           <hr className='bg-light' />
 
           <div className='px-5'>
-            {loadingDelete && <Loader />}
+            {loadingDelete && (
+              <div className='my-3'>
+                <Loader />
+              </div>
+            )}
             {errorDelete && (
               <div className='mt-3'>
                 <Message>{errorDelete}</Message>
