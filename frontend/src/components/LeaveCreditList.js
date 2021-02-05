@@ -20,7 +20,7 @@ const LeaveCreditList = () => {
           </Message>
         ) : (
           <div>
-            <Table striped bordered hover responsive size='sm'>
+            <Table striped bordered responsive variant='dark' size='sm'>
               <thead>
                 <tr>
                   <th>Type</th>

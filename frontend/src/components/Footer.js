@@ -1,16 +1,18 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
 
 const Footer = () => {
   return (
-    <footer className='bg-light'>
-      <Container>
-        <Row>
-          <Col className='text-center py-3'>
-            Copyright &copy; Personnel Information System
-          </Col>
-        </Row>
-      </Container>
+    <footer>
+      <Navbar
+        bg='light'
+        className='d-flex justify-content-center'
+        fixed='bottom'
+      >
+        <p className='text-dark py-2 m-0'>
+          Copyright &copy; Personnel Information System 2021
+        </p>
+      </Navbar>
     </footer>
   );
 };

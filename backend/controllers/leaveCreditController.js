@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import LeaveCredit from "../models/leaveCreditModel.js";
 import User from "../models/userModel.js";
+import dayjs from "dayjs";
 
 // @desc    Create a leave credit
 // @route   POST /api/leavecredits/:id
@@ -15,7 +16,8 @@ const createLeaveCredit = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid employee data");
   } else {
-    user.leaveCredits = user.leaveCredits + balance;
+    user.leaveCredits = Number(Number(user.leaveCredits) + Number(balance));
+    user.absences = Number(Number(user.absences) + Number(absences));
     const notif = {
       url: "/profile",
       message: "Leave Credit updated",
@@ -29,7 +31,7 @@ const createLeaveCredit = asyncHandler(async (req, res) => {
       earned,
       absences,
       balance,
-      createdBy: req.user.name,
+      createdBy: `${req.user.lastname}, ${req.user.firstname}`,
       creatorType: req.user.userType,
       user: userId,
     });
@@ -69,7 +71,7 @@ const getLeaveCredits = asyncHandler(async (req, res) => {
     creatorType: req.user.userType,
   })
     .sort("-createdAt")
-    .populate("user", "idNumber name");
+    .populate("user", "idNumber firstname lastname");
 
   if (leaveCredits) {
     res.json(leaveCredits);

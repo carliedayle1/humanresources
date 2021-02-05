@@ -24,6 +24,7 @@ const authUser = asyncHandler(async (req, res) => {
       campus,
       userType,
       isEvaluator,
+      isSuperAdmin,
       notifications,
       password,
     } = user;
@@ -44,7 +45,7 @@ const authUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error("Invalid id number or password");
+    throw new Error("Invalid id number/email or password");
   }
 });
 
@@ -54,7 +55,9 @@ const authUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
   const {
     idNumber,
-    name,
+    firstname,
+    lastname,
+    middlename,
     email,
     college,
     position,
@@ -63,18 +66,24 @@ const registerUser = asyncHandler(async (req, res) => {
     isAdmin,
     isEvaluator,
     dateHired,
+    program,
   } = req.body;
 
-  const userExist = await User.findOne({ idNumber });
+  // console.log(req.body);
 
-  if (userExist) {
+  const userExist = await User.findOne({ idNumber });
+  const emailExist = await User.findOne({ email });
+
+  if (userExist || emailExist) {
     res.status(400);
-    throw new Error("Employeee ID number already taken");
+    throw new Error("Employeee ID number /email already taken");
   }
 
   const user = await User.create({
     idNumber,
-    name,
+    firstname,
+    lastname,
+    middlename,
     email,
     college,
     position,
@@ -84,6 +93,7 @@ const registerUser = asyncHandler(async (req, res) => {
     userType: req.user.userType,
     isEvaluator,
     dateHired,
+    program,
   });
 
   if (user) {
@@ -103,7 +113,9 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).select("-password");
+  const user = await User.findById(req.user._id).select(
+    "-password -notifications"
+  );
 
   if (user) {
     res.json(user);

@@ -1,30 +1,109 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import Loader from "../components/Loader";
-import Message from "../components/Message";
+import { Row, Col, Form, Button } from "react-bootstrap";
+import Loader from "./Loader";
+import Message from "./Message";
 import { searchUser } from "../actions/userActions";
-import { useForm } from "react-hook-form";
 
 const SearchEmployee = () => {
   const [search, setSearch] = useState("");
-
-  const { register, handleSubmit, errors } = useForm();
+  const [message, setMessage] = useState("");
 
   const dispatch = useDispatch();
 
   const userSearch = useSelector((state) => state.userSearch);
-  const { loading, error } = userSearch;
+  const { loading, error, user } = userSearch;
 
-  const searchSubmitHandler = () => {
-    if (search.trim()) {
-      dispatch(searchUser(search));
+  const searchSubmitHandler = (e) => {
+    e.preventDefault();
+    setMessage("");
+    if (search === "") {
+      setMessage("Search input is required...");
+      return;
+    } else {
+      if (search.trim()) {
+        dispatch(searchUser(search));
+      }
     }
   };
 
   return (
     <>
-      <Container className='d-flex justify-content-center py-3'>
+      <div className='d-flex justify-content-center align-items center'>
+        <Form onSubmit={searchSubmitHandler}>
+          <Form.Group as={Row} controlId='search'>
+            <Form.Label column sm={4} className='text-light'>
+              ID Number
+            </Form.Label>
+            <Col sm={7}>
+              <Form.Control
+                type='text'
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </Col>
+            <Col sm={1}>
+              {loading ? (
+                <Loader />
+              ) : (
+                <Button variant='danger' type='submit'>
+                  Search
+                </Button>
+              )}
+            </Col>
+          </Form.Group>
+          {error && (
+            <div className='mt-3'>
+              <Message>{error}</Message>
+            </div>
+          )}
+
+          {message && (
+            <div className='mt-3'>
+              <Message>{message}</Message>
+            </div>
+          )}
+        </Form>
+      </div>
+
+      <hr className='bg-light' />
+
+      {user && user.idNumber && (
+        <div>
+          <Row className='text-light'>
+            <Col sm={2}>
+              <h5>ID Number:</h5>
+            </Col>
+            <Col sm={4}>
+              <h5>{user && user.idNumber ? user.idNumber : ""}</h5>
+            </Col>
+            <Col sm={2}>
+              <h5>Position:</h5>
+            </Col>
+            <Col sm={4}>
+              <h5>{user && user.position ? user.position : ""}</h5>
+            </Col>
+            <Col sm={2}>
+              <h5>Name:</h5>
+            </Col>
+            <Col sm={4}>
+              <h5>
+                {user && user.firstname
+                  ? `${user.firstname} ${user.middlename} ${user.lastname}`
+                  : ""}
+              </h5>
+            </Col>
+            <Col sm={2}>
+              <h5>Rank:</h5>
+            </Col>
+            <Col sm={4}>
+              <h5>{user && user.rank ? user.rank : ""}</h5>
+            </Col>
+          </Row>
+        </div>
+      )}
+
+      {/* <Container className='d-flex justify-content-center py-3'>
         <Form className='w-50' onSubmit={handleSubmit(searchSubmitHandler)}>
           <Form.Group as={Row} controlId='particular'>
             <Form.Label column sm={3} className='text-dark'>
@@ -56,7 +135,7 @@ const SearchEmployee = () => {
           )}
           {error && <Message variant='danger'>{error}</Message>}
         </Form>
-      </Container>
+      </Container> */}
     </>
   );
 };

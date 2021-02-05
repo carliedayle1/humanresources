@@ -45,11 +45,7 @@ const listDocuments = asyncHandler(async (req, res) => {
 const deleteDocument = asyncHandler(async (req, res) => {
   const document = await Document.findById(req.params.id);
 
-  const __dirname = path.resolve();
-
-  // res.json(__dirname + "\\" + document.url.split("/")[1]);
   if (document) {
-    fs.unlinkSync(__dirname + "\\" + document.url.split("/")[1]);
     await document.remove();
     res.json("Document deleted");
   } else {
@@ -61,20 +57,20 @@ const deleteDocument = asyncHandler(async (req, res) => {
 // @desc    Download documents
 // @route   GET /api/documents/download/:id
 // @access  Private
-const downloadDocument = asyncHandler(async (req, res) => {
-  const document = await Document.findById(req.params.id);
+// const downloadDocument = asyncHandler(async (req, res) => {
+//   const document = await Document.findById(req.params.id);
 
-  const __dirname = path.resolve();
+//   const __dirname = path.resolve();
 
-  if (document) {
-    const filepath = path.join(__dirname, document.url);
+//   if (document) {
+//     const filepath = path.join(__dirname, document.url);
 
-    res.download(filepath, `${document.name}`);
-  } else {
-    res.status(404);
-    throw new Error("Document not found");
-  }
-});
+//     res.download(filepath, `${document.name}`);
+//   } else {
+//     res.status(404);
+//     throw new Error("Document not found");
+//   }
+// });
 
 // @desc    Download documents
 // @route   GET /api/documents/:id
@@ -96,6 +92,6 @@ export {
   createDocument,
   listDocuments,
   deleteDocument,
-  downloadDocument,
+  // downloadDocument,
   listEmployeeDocuments,
 };

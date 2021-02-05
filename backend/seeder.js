@@ -17,12 +17,12 @@ connectDB();
 
 const importData = async () => {
   try {
-    await User.deleteMany();
-    await Document.deleteMany();
     await Evaluation.deleteMany();
     await LeaveCredit.deleteMany();
     await Rank.deleteMany();
     await Rating.deleteMany();
+    await User.deleteMany();
+    await Document.deleteMany();
 
     const createdUsers = await User.insertMany(users);
 
@@ -45,12 +45,21 @@ const importData = async () => {
 
 const destroyData = async () => {
   try {
-    await User.deleteMany();
-    await Document.deleteMany();
+    const users = await User.find();
+
+    users.map((user) => {
+      const notifs = user.notifications;
+
+      notifs.map((notif) => notif.pull());
+
+      return user;
+    });
     await Evaluation.deleteMany();
     await LeaveCredit.deleteMany();
     await Rank.deleteMany();
     await Rating.deleteMany();
+    await Document.deleteMany();
+    await User.deleteMany();
 
     console.log("Data Destroyed!".red.inverse);
     process.exit();

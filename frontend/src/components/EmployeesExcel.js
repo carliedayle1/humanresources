@@ -13,7 +13,11 @@ const EmployeesExcel = ({ filename }) => {
 
   return (
     <ExcelFile
-      element={<Button variant='info'>Export to Excel</Button>}
+      element={
+        <Button variant='success' className='btn btn-lg'>
+          Export to Excel
+        </Button>
+      }
       filename={filename}
     >
       <ExcelSheet data={users} name='Employees'>

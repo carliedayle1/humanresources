@@ -63,6 +63,7 @@ import {
   USER_NOTIFICATION_REQUEST,
   USER_NOTIFICATION_SUCCESS,
   USER_NOTIFICATION_FAIL,
+  USER_SEARCH_RESET,
 } from "../constants/userConstants";
 
 export const login = (idNumber, password) => async (dispatch) => {
@@ -108,6 +109,8 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: USER_DETAILS_RESET,
   });
+
+  dispatch({ type: USER_SEARCH_RESET });
 
   dispatch({
     type: USER_LIST_RESET,
@@ -273,7 +276,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get(`/api/users/${id}`, config);
-
     dispatch({
       type: USER_DETAILS_SUCCESS,
       payload: data,

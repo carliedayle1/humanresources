@@ -23,14 +23,14 @@ export const createLeaveCredit = (leaveCredit, id) => async (
       userLogin: { userInfo },
     } = getState();
 
-    console.log(id);
-
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
+
+    // console.log(leaveCredit);
 
     await axios.post(`/api/leavecredits/${id}`, leaveCredit, config);
 

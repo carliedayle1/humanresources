@@ -8,26 +8,34 @@ const userSchema = mongoose.Schema(
       required: true,
       default: 1,
     },
-    name: {
+    firstname: {
+      type: String,
+      required: true,
+    },
+    middlename: {
+      type: String,
+      required: true,
+    },
+    lastname: {
       type: String,
       required: true,
     },
     idNumber: {
       type: String,
       required: true,
-      unique: true,
     },
     email: {
       type: String,
-    },
-    profilePicture: {
-      type: String,
       required: true,
-      default: "/images/man.png",
     },
     password: {
       type: String,
       required: true,
+    },
+    isSuperAdmin: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
     isAdmin: {
       type: Boolean,
@@ -53,8 +61,20 @@ const userSchema = mongoose.Schema(
     },
     leaveCredits: {
       type: Number,
+      default: 0,
+    },
+    evalPoints: {
+      type: Number,
+      default: 0,
+    },
+    absences: {
+      type: Number,
+      default: 0,
     },
     dateHired: {
+      type: String,
+    },
+    program: {
       type: String,
     },
 

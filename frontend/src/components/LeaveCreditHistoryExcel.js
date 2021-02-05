@@ -16,7 +16,11 @@ const LeaveCreditHistoryExcel = () => {
     <>
       {leaveCredits && leaveCredits.length > 0 && (
         <ExcelFile
-          element={<Button variant='info'>Export to Excel</Button>}
+          element={
+            <Button variant='success' className='btn btn-lg'>
+              Export to Excel
+            </Button>
+          }
           filename={`Leave Credit History - ${dayjs().format("MM/DD/YYYY")}`}
         >
           <ExcelSheet data={leaveCredits} name='Leave Credits History'>

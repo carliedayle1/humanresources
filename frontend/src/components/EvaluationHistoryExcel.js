@@ -16,7 +16,11 @@ const EvaluationHistoryExcel = () => {
     <>
       {evaluations && evaluations.length > 0 && (
         <ExcelFile
-          element={<Button variant='info'>Export to Excel</Button>}
+          element={
+            <Button variant='success' className='btn btn-lg'>
+              Export to Excel
+            </Button>
+          }
           filename={`Employee Evaluations - ${dayjs().format("MM-DD-YYYY")}`}
         >
           <ExcelSheet data={evaluations} name='All Employee Evaluations'>
