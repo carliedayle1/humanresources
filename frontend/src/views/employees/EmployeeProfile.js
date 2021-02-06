@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { Link } from "react-router-dom";
-import { Form, Button, Row, Col, Card, Table } from "react-bootstrap";
+import { Form, Row, Col, Card } from "react-bootstrap";
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
+import DocumentList from "../../components/DocumentList";
 import {
   //   getUserRanks,
   getEmployeeDocuments,
@@ -13,10 +14,8 @@ import dayjs from "dayjs";
 
 const EmployeeProfile = ({ history, match }) => {
   const empId = match.params.id;
-
   const oldUser = useRef();
   const dispatch = useDispatch();
-
   //   const [showRank, setShowRank] = useState(false);
 
   const [idNumber, setIdNumber] = useState("");
@@ -50,10 +49,20 @@ const EmployeeProfile = ({ history, match }) => {
     error: errorDocuments,
   } = userDocuments;
 
+  // function componentDidUpdate(prevProps) {
+  //   // will be true
+  //   console.log(prevProps.location);
+  //   // const locationChanged =
+  //   //   this.props.location !== prevProps.location;
+
+  //   // // INCORRECT, will *always* be false because history is mutable.
+  //   // const locationChanged =
+  //   //   this.props.history.location !== prevProps.history.location;
+  // }
+
   if (error) {
     history.push("/employees");
   }
-
   useEffect(() => {
     if (!userInfo || !userInfo.isAdmin) {
       history.push("/");
@@ -373,47 +382,48 @@ const EmployeeProfile = ({ history, match }) => {
                 </Message>
               </div>
             ) : (
-              <Table striped bordered size='sm' variant='dark' className='mt-3'>
-                <thead>
-                  <tr>
-                    <th>Document Name</th>
-                    <th>Type</th>
-                    <th>Date Uploaded</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {documents.map((doc) => {
-                    return (
-                      <tr key={doc._id}>
-                        <td>{doc.name}</td>
-                        <td>{doc.type}</td>
-                        <td>{dayjs(doc.createdAt).format("MMMM D, YYYY")}</td>
-                        <td>
-                          <a
-                            href={doc.url}
-                            download={doc.url}
-                            target='_blank'
-                            without='true'
-                            rel='noreferrer'
-                          >
-                            <Button className='btn btn-sm btn-primary mr-2'>
-                              Download
-                            </Button>
-                          </a>
+              <DocumentList />
+              // <Table striped bordered size='sm' variant='dark' className='mt-3'>
+              //   <thead>
+              //     <tr>
+              //       <th>Document Name</th>
+              //       <th>Type</th>
+              //       <th>Date Uploaded</th>
+              //       <th>Actions</th>
+              //     </tr>
+              //   </thead>
+              //   <tbody>
+              //     {documents.map((doc) => {
+              //       return (
+              //         <tr key={doc._id}>
+              //           <td>{doc.name}</td>
+              //           <td>{doc.type}</td>
+              //           <td>{dayjs(doc.createdAt).format("MMMM D, YYYY")}</td>
+              //           <td>
+              //             <a
+              //               href={doc.url}
+              //               download={doc.url}
+              //               target='_blank'
+              //               without='true'
+              //               rel='noreferrer'
+              //             >
+              //               <Button className='btn btn-sm btn-primary mr-2'>
+              //                 Download
+              //               </Button>
+              //             </a>
 
-                          {/* <Button
-                            onClick={() => deleteHandler(doc._id)}
-                            className='btn btn-sm btn-danger'
-                          >
-                            Delete
-                          </Button> */}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
+              //             {/* <Button
+              //               onClick={() => deleteHandler(doc._id)}
+              //               className='btn btn-sm btn-danger'
+              //             >
+              //               Delete
+              //             </Button> */}
+              //           </td>
+              //         </tr>
+              //       );
+              //     })}
+              //   </tbody>
+              // </Table>
             )}
           </div>
         </Card.Body>
@@ -479,207 +489,6 @@ const EmployeeProfile = ({ history, match }) => {
       <br />
     </div>
   );
-
-  //   return (
-  //     <>
-  //       <h1>Employee Profile</h1>
-  //       <Link to='/employees'>
-  //         {" "}
-  //         <Button variant='outline-info' className='my-3'>
-  //           Go back
-  //         </Button>
-  //       </Link>
-  //       {error && <Message variant='danger'>{error}</Message>}
-
-  //       {loading ? (
-  //         <Loader />
-  //       ) : (
-  //         <Container className='bg-light rounded shadow-lg p-4'>
-  //           <h3>Personal Information</h3>
-
-  //           <Row className='my-3 px-4'>
-  //             <Col sm={12} md={6}>
-  //               <Card body className='bg-info shadow text-light '>
-  //                 <Row>
-  //                   <Col md={4}>
-  //                     <h5>ID Number:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{idNumber}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                   <Col md={4}>
-  //                     <h5>Name:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{name}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                   <Col md={4}>
-  //                     <h5>Email:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{email}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                   <Col md={4}>
-  //                     <h5>Position:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{position}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                   <Col md={4}>
-  //                     <h5>Rank:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{rank}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                 </Row>
-  //               </Card>
-  //             </Col>
-
-  //             <Col sm={12} md={6}>
-  //               <Card body className='bg-secondary shadow text-light '>
-  //                 <Row>
-  //                   <Col md={4}>
-  //                     <h5>Date Hired:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{dayjs(dateHired).format("MMMM D, YYYY")}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                   <Col md={4}>
-  //                     <h5>Total Leave Credits:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{credits}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                   <Col md={4}>
-  //                     <h5>Campus:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{campus}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                   <Col md={4}>
-  //                     <h5>College:</h5>
-  //                   </Col>
-  //                   <Col md={8}>
-  //                     <h5>
-  //                       <strong>{college}</strong>
-  //                     </h5>
-  //                   </Col>
-  //                 </Row>
-  //               </Card>
-  //             </Col>
-  //           </Row>
-
-  //           <Button variant='outline-warning' onClick={showRankHandler}>
-  //             {" "}
-  //             View previous rank
-  //           </Button>
-
-  //           {showRank && (
-  //             <Row className='my-3 p-4'>
-  //               <Col md={7}>
-  //                 {errorRanks && <Message variant='danger'>{errorRanks}</Message>}
-
-  //                 <Card body className='bg-primary'>
-  //                   {loadingRanks ? (
-  //                     <Loader />
-  //                   ) : (
-  //                     <Table
-  //                       striped
-  //                       borderless
-  //                       hover
-  //                       responsive
-  //                       variant='light'
-  //                       size='sm'
-  //                       className='rounded-lg mb-0'
-  //                     >
-  //                       <thead>
-  //                         <tr>
-  //                           <th>Rank Name</th>
-  //                           <th>Date Verified</th>
-  //                         </tr>
-  //                       </thead>
-  //                       <tbody>
-  //                         {ranks.map((rank) => {
-  //                           return (
-  //                             <tr key={rank._id}>
-  //                               <td>{rank.name}</td>
-  //                               <td>
-  //                                 {dayjs(rank.createdAt).format("MMMM D, YYYY")}
-  //                               </td>
-  //                             </tr>
-  //                           );
-  //                         })}
-  //                       </tbody>
-  //                     </Table>
-  //                   )}
-  //                 </Card>
-  //               </Col>
-  //             </Row>
-  //           )}
-
-  //           <hr className='my-3' />
-  //           <h4>Documents</h4>
-
-  //           {errorDocuments && (
-  //             <Message variant='danger'>{errorDocuments}</Message>
-  //           )}
-
-  //           {loadingDocuments ? (
-  //             <Loader />
-  //           ) : (
-  //             <Row className='my-3 px-4'>
-  //               <Col>
-  //                 <Table
-  //                   striped
-  //                   borderless
-  //                   hover
-  //                   responsive
-  //                   variant='dark'
-  //                   size='sm'
-  //                   className='rounded-lg'
-  //                 >
-  //                   <thead>
-  //                     <tr>
-  //                       <th>Document Name</th>
-  //                       <th>Type</th>
-  //                       <th>Date Uploaded</th>
-  //                     </tr>
-  //                   </thead>
-  //                   <tbody>
-  //                     {documents.map((doc) => {
-  //                       return (
-  //                         <tr key={doc._id}>
-  //                           <td>{doc.name}</td>
-  //                           <td>{doc.type}</td>
-  //                           <td>{dayjs(doc.createdAt).format("MMMM D, YYYY")}</td>
-  //                         </tr>
-  //                       );
-  //                     })}
-  //                   </tbody>
-  //                 </Table>
-  //               </Col>
-  //             </Row>
-  //           )}
-  //         </Container>
-  //       )}
-  //     </>
-  //   );
 };
 
 export default EmployeeProfile;

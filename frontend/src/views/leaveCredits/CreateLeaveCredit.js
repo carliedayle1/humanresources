@@ -52,104 +52,107 @@ const CreateLeaveCredit = ({ history }) => {
     e.preventDefault();
     setMessage("");
 
-    if (!user && !user._id) {
+    if (!user || !user._id) {
       setMessage("Please search for an employee..");
       return;
+    } else {
+      dispatch(
+        createLeaveCredit(
+          {
+            type: "Service",
+            particular: particulars,
+            earned: Number(serviceEarned),
+            absences: Number(serviceAbsence),
+            balance: Number(serviceEarned - serviceAbsence),
+            user: user._id,
+            createdBy: `${userInfo.lastname}, ${userInfo.firstname} `,
+          },
+          user._id
+        )
+      );
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Leave credit saved!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      setServiceAbsence(0);
+      setParticulars("");
+      setServiceEarned(0);
+      history.push(`/employees/${user._id}`);
     }
-
-    dispatch(
-      createLeaveCredit(
-        {
-          type: "Service",
-          particular: particulars,
-          earned: Number(serviceEarned),
-          absences: Number(serviceAbsence),
-          balance: Number(serviceEarned - serviceAbsence),
-          user: user._id,
-          createdBy: `${userInfo.lastname}, ${userInfo.firstname} `,
-        },
-        user._id
-      )
-    );
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Leave credit saved!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-
-    setServiceAbsence(0);
-    setParticulars("");
-    setServiceEarned(0);
   };
 
   const vacationSubmitHandler = (e) => {
     e.preventDefault();
     setMessage("");
 
-    if (!user && !user._id) {
-      setMessage("Please search for an employee..");
+    if (!user || !user._id) {
+      setMessage("Please search for an employee first..");
       return;
+    } else {
+      dispatch(
+        createLeaveCredit(
+          {
+            type: "Vacation",
+            earned: Number(vacationEarned),
+            absences: Number(vacationAbsence),
+            balance: Number(vacationEarned - vacationAbsence),
+            user: user._id,
+            createdBy: `${userInfo.lastname}, ${userInfo.firstname} `,
+          },
+          user._id
+        )
+      );
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Leave credit saved!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      setVacationAbsence(0);
+      setVacationEarned(0);
+      history.push(`/employees/${user._id}`);
     }
-
-    dispatch(
-      createLeaveCredit(
-        {
-          type: "Vacation",
-          earned: Number(vacationEarned),
-          absences: Number(vacationAbsence),
-          balance: Number(vacationEarned - vacationAbsence),
-          user: user._id,
-          createdBy: `${userInfo.lastname}, ${userInfo.firstname} `,
-        },
-        user._id
-      )
-    );
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Leave credit saved!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-
-    setVacationAbsence(0);
-    setVacationEarned(0);
   };
 
   const sickSubmitHandler = (e) => {
     e.preventDefault();
     setMessage("");
 
-    if (!user && !user._id) {
+    if (!user || !user._id) {
       setMessage("Please search for an employee..");
       return;
+    } else {
+      dispatch(
+        createLeaveCredit(
+          {
+            type: "Sick",
+            earned: Number(sickEarned),
+            absences: Number(sickAbsence),
+            balance: Number(sickEarned - sickAbsence),
+            user: user._id,
+            createdBy: `${userInfo.lastname}, ${userInfo.firstname} `,
+          },
+          user._id
+        )
+      );
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Leave credit saved!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      setSickAbsence(0);
+      setSickEarned(0);
+      history.push(`/employees/${user._id}`);
     }
-
-    dispatch(
-      createLeaveCredit(
-        {
-          type: "Sick",
-          earned: Number(sickEarned),
-          absences: Number(sickAbsence),
-          balance: Number(sickEarned - sickAbsence),
-          user: user._id,
-          createdBy: `${userInfo.lastname}, ${userInfo.firstname} `,
-        },
-        user._id
-      )
-    );
-    Swal.fire({
-      position: "top-end",
-      icon: "success",
-      title: "Leave credit saved!",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-
-    setSickAbsence(0);
-    setSickEarned(0);
   };
 
   const showCreditHandler = () => {

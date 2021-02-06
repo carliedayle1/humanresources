@@ -4,17 +4,17 @@ import {
   getUserDetails,
   userUploadDoc,
   getUserDocuments,
-  deleteDocument,
   userUpdateProfileDetails,
 } from "../actions/userActions";
 // import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 import { app } from "../base";
 import dayjs from "dayjs";
 
-import { Card, Form, Button, Table, Modal, Col, Row } from "react-bootstrap";
+import { Card, Form, Button, Modal, Col, Row } from "react-bootstrap";
 import Swal from "sweetalert2";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import DocumentList from "../components/DocumentList";
 
 const Profile = ({ history }) => {
   const dispatch = useDispatch();
@@ -68,7 +68,6 @@ const Profile = ({ history }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [show, setShow] = useState(false);
-  const [type, setType] = useState("NBC");
   const [message, setMessage] = useState("");
 
   const handleClose = () => setShow(false);
@@ -126,7 +125,6 @@ const Profile = ({ history }) => {
     successDoc,
     user,
     successUpdate,
-    successDoc,
     successDelete,
     dispatch,
   ]);
@@ -146,7 +144,6 @@ const Profile = ({ history }) => {
     e.preventDefault();
 
     const file = e.target.docFile.files[0];
-
     if (
       file.type ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
@@ -163,7 +160,7 @@ const Profile = ({ history }) => {
       dispatch(
         userUploadDoc({
           name: file.name,
-          type: type,
+          type: e.target.fileCategory.value,
           url: fileUrl,
           userId: user._id,
         })
@@ -181,23 +178,6 @@ const Profile = ({ history }) => {
       setMessage("Only .docx, .xls, .xlsx and .pdf file are allowed..");
       return;
     }
-  };
-
-  const deleteHandler = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(deleteDocument(id));
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
   };
 
   const submitHandler = (e) => {
@@ -499,12 +479,16 @@ const Profile = ({ history }) => {
           <div className='px-5'>
             <div className='d-flex justify-content-between text-light'>
               <h4>Documents</h4>
-              <Button
-                className='btn btn-lg btn-success shadow-lg'
-                onClick={handleShow}
-              >
-                Upload document
-              </Button>
+              {loadingDoc ? (
+                <Loader />
+              ) : (
+                <Button
+                  className='btn btn-lg btn-success shadow-lg'
+                  onClick={handleShow}
+                >
+                  Upload document
+                </Button>
+              )}
             </div>
 
             {errorDocuments && (
@@ -528,47 +512,7 @@ const Profile = ({ history }) => {
                 </Message>
               </div>
             ) : (
-              <Table striped bordered size='sm' variant='dark' className='mt-3'>
-                <thead>
-                  <tr>
-                    <th>Document Name</th>
-                    <th>Type</th>
-                    <th>Date Uploaded</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {documents.map((doc) => {
-                    return (
-                      <tr key={doc._id}>
-                        <td>{doc.name}</td>
-                        <td>{doc.type}</td>
-                        <td>{dayjs(doc.createdAt).format("MMMM D, YYYY")}</td>
-                        <td>
-                          {/* <a
-                            href={doc.url}
-                            download={doc.url}
-                            target='_blank'
-                            without='true'
-                            rel='noreferrer'
-                          >
-                            <Button className='btn btn-sm btn-primary mr-2'>
-                              Download
-                            </Button>
-                          </a> */}
-
-                          <Button
-                            onClick={() => deleteHandler(doc._id)}
-                            className='btn btn-sm btn-danger'
-                          >
-                            Delete
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
+              <DocumentList />
             )}
           </div>
         </Card.Body>
@@ -581,13 +525,15 @@ const Profile = ({ history }) => {
         <Modal.Body>
           <Form onSubmit={fileSubmitHandler}>
             <Form.Group controlId='type'>
-              <Form.Label className='text-white'>Document Type</Form.Label>
+              <Form.Label className='text-white'>Document Category</Form.Label>
               <Form.Control
                 as='select'
-                onChange={(e) => setType(e.target.value)}
+                name='fileCategory'
+                className='text-white'
               >
-                <option value='NBC'>NBC</option>
-                <option value='PDS'>PDS</option>
+                <option value='PR'>PERSONAL RECORDS</option>
+                <option value='ER'>EDUCATIONAL RECORDS</option>
+                <option value='MAC'>MERITS, AWARDS &amp; CERTIFICATES</option>
               </Form.Control>
             </Form.Group>
             <Form.Group>
@@ -612,18 +558,14 @@ const Profile = ({ history }) => {
               )}
             </Form.Group>
             <div className='text-center'>
-              {loadingDoc ? (
-                <Loader />
-              ) : (
-                <Button
-                  type='submit'
-                  className='btn-lg'
-                  // onClick={handleClose}
-                  variant='info'
-                >
-                  Upload
-                </Button>
-              )}
+              <Button
+                type='submit'
+                className='btn-lg'
+                onClick={handleClose}
+                variant='info'
+              >
+                Upload
+              </Button>
             </div>
           </Form>
         </Modal.Body>

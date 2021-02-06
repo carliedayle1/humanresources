@@ -50,6 +50,7 @@ const EvaluatorList = ({ history }) => {
                     <th>ID Number</th>
 
                     <th>Evaluator Name</th>
+                    <th>Email</th>
                     <th>Date Created</th>
                   </tr>
                 </thead>
@@ -59,7 +60,7 @@ const EvaluatorList = ({ history }) => {
                       <tr key={eva._id}>
                         <td>{eva.idNumber}</td>
                         <td>{`${eva.lastname}, ${eva.firstname}`}</td>
-
+                        <td>{eva.email}</td>
                         <td>{dayjs(eva.createdAt).format("MMMM D, YYYY")}</td>
                       </tr>
                     );

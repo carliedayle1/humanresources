@@ -22,7 +22,6 @@ const CreateAdmin = ({ history }) => {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [position, setPosition] = useState("");
-  const [rank, setRank] = useState("");
   const [college, setCollege] = useState("");
   const [program, setProgram] = useState("");
   const [dateHired, setDateHired] = useState("");
@@ -58,7 +57,7 @@ const CreateAdmin = ({ history }) => {
         email,
         college: college.toString().toUpperCase(),
         position: Number(position),
-        rank: rank.toString().toUpperCase(),
+        rank: e.target.rankSelect.value,
         dateHired,
         password: lastname.toString().toUpperCase(),
         campus: campus.split(" ")[0],
@@ -177,12 +176,59 @@ const CreateAdmin = ({ history }) => {
                 <Form.Label column sm='2'>
                   Rank:
                 </Form.Label>
-                <Col sm='4'>
-                  <Form.Control
-                    value={rank}
-                    onChange={(e) => setRank(e.target.value)}
-                    className='text-white'
-                  />
+                <Col sm={4}>
+                  <select
+                    className='form-control text-white'
+                    id='rank'
+                    name='rankSelect'
+                  >
+                    <option value='INSTRUCTOR 1'>INSTRUCTOR 1</option>
+                    <option value='INSTRUCTOR 2'>INSTRUCTOR 2</option>
+                    <option value='INSTRUCTOR 3'>INSTRUCTOR 3</option>
+                    <hr className='bg-white' />
+                    <option value='ASSISTANT PROFESSOR 1'>
+                      ASSISTANT PROFESSOR 1
+                    </option>
+                    <option value='ASSISTANT PROFESSOR 2'>
+                      ASSISTANT PROFESSOR 2
+                    </option>
+                    <option value='ASSISTANT PROFESSOR 3'>
+                      ASSISTANT PROFESSOR 3
+                    </option>
+                    <option value='ASSISTANT PROFESSOR 4'>
+                      ASSISTANT PROFESSOR 4
+                    </option>
+                    <hr className='bg-white' />
+
+                    <option value='ASSOCIATE PROFESSOR 1'>
+                      ASSOCIATE PROFESSOR 1
+                    </option>
+                    <option value='ASSOCIATE PROFESSOR 2'>
+                      ASSOCIATE PROFESSOR 2
+                    </option>
+                    <option value='ASSOCIATE PROFESSOR 3'>
+                      ASSOCIATE PROFESSOR 3
+                    </option>
+                    <option value='ASSOCIATE PROFESSOR 4'>
+                      ASSOCIATE PROFESSOR 4
+                    </option>
+                    <option value='ASSOCIATE PROFESSOR 5'>
+                      ASSOCIATE PROFESSOR 5
+                    </option>
+                    <hr className='bg-white' />
+
+                    <option value='PROFESSOR 1'>PROFESSOR 1</option>
+                    <option value='PROFESSOR 2'>PROFESSOR 2</option>
+                    <option value='PROFESSOR 3'>PROFESSOR 3</option>
+                    <option value='PROFESSOR 4'>PROFESSOR 4</option>
+                    <option value='PROFESSOR 5'>PROFESSOR 5</option>
+                    <option value='PROFESSOR 6'>PROFESSOR 6</option>
+                    <hr className='bg-white' />
+
+                    <option value='UNIVERSITY PROFESSOR'>
+                      UNIVERSITY PROFESSOR
+                    </option>
+                  </select>
                 </Col>
               </Form.Group>
 

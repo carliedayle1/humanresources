@@ -12,7 +12,6 @@ import {
   listUserEvaluations,
   listAllEvaluationRatings,
 } from "../../actions/evaluationActions";
-import { searchUser } from "../../actions/userActions";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
 import Swal from "sweetalert2";
@@ -39,7 +38,6 @@ const CreateEvaluation = ({ history }) => {
   } = evaluationCreate;
 
   const [qce, setQce] = useState(0);
-  const [rank, setRank] = useState("");
 
   const [show, setShow] = useState(false);
 
@@ -75,7 +73,6 @@ const CreateEvaluation = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
     if (user._id === undefined) {
       Swal.fire({
         icon: "error",
@@ -85,7 +82,9 @@ const CreateEvaluation = ({ history }) => {
     } else {
       Swal.fire({
         title: "Submit Entry",
-        html: `Total Points: ${calculateTotal()} <br/> QCE Points: ${qce} <br/> Rank: ${rank}`,
+        html: `Total Points: ${calculateTotal()} <br/> QCE Points: ${qce} <br/> Rank: ${
+          e.target.rankSelect.value
+        }`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -98,14 +97,13 @@ const CreateEvaluation = ({ history }) => {
               user._id,
               calculateTotal(),
               qce,
-              rank.toString().toUpperCase()
+              e.target.rankSelect.value
             )
           );
           Swal.fire("Saved!", "Evaluation submitted successfully.", "success");
           setQce(0);
-          setRank("");
 
-          dispatch(searchUser(user.idNumber));
+          history.push(`/employees/${user._id}`);
         }
       });
     }
@@ -231,16 +229,61 @@ const CreateEvaluation = ({ history }) => {
                   </Form.Group>
                   <Form.Group as={Row}>
                     <Form.Label column sm='4'>
-                      Rank
+                      Rank:
                     </Form.Label>
-                    <Col sm='8'>
-                      <Form.Control
-                        type='text'
-                        step='.01'
-                        value={rank}
-                        onChange={(e) => setRank(e.target.value)}
-                        className='text-white'
-                      />
+                    <Col sm={8}>
+                      <select
+                        className='form-control text-white'
+                        id='rank'
+                        name='rankSelect'
+                      >
+                        <option value='INSTRUCTOR 1'>INSTRUCTOR 1</option>
+                        <option value='INSTRUCTOR 2'>INSTRUCTOR 2</option>
+                        <option value='INSTRUCTOR 3'>INSTRUCTOR 3</option>
+                        <hr className='bg-white' />
+                        <option value='ASSISTANT PROFESSOR 1'>
+                          ASSISTANT PROFESSOR 1
+                        </option>
+                        <option value='ASSISTANT PROFESSOR 2'>
+                          ASSISTANT PROFESSOR 2
+                        </option>
+                        <option value='ASSISTANT PROFESSOR 3'>
+                          ASSISTANT PROFESSOR 3
+                        </option>
+                        <option value='ASSISTANT PROFESSOR 4'>
+                          ASSISTANT PROFESSOR 4
+                        </option>
+                        <hr className='bg-white' />
+
+                        <option value='ASSOCIATE PROFESSOR 1'>
+                          ASSOCIATE PROFESSOR 1
+                        </option>
+                        <option value='ASSOCIATE PROFESSOR 2'>
+                          ASSOCIATE PROFESSOR 2
+                        </option>
+                        <option value='ASSOCIATE PROFESSOR 3'>
+                          ASSOCIATE PROFESSOR 3
+                        </option>
+                        <option value='ASSOCIATE PROFESSOR 4'>
+                          ASSOCIATE PROFESSOR 4
+                        </option>
+                        <option value='ASSOCIATE PROFESSOR 5'>
+                          ASSOCIATE PROFESSOR 5
+                        </option>
+                        <hr className='bg-white' />
+
+                        <option value='PROFESSOR 1'>PROFESSOR 1</option>
+                        <option value='PROFESSOR 2'>PROFESSOR 2</option>
+                        <option value='PROFESSOR 3'>PROFESSOR 3</option>
+                        <option value='PROFESSOR 4'>PROFESSOR 4</option>
+                        <option value='PROFESSOR 5'>PROFESSOR 5</option>
+                        <option value='PROFESSOR 6'>PROFESSOR 6</option>
+                        <hr className='bg-white' />
+
+                        <option value='UNIVERSITY PROFESSOR'>
+                          UNIVERSITY PROFESSOR
+                        </option>
+                      </select>
                     </Col>
                   </Form.Group>
                   {loadingCreate ? (

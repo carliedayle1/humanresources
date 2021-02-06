@@ -35,7 +35,10 @@ const createDocument = asyncHandler(async (req, res) => {
 // @route   GET /api/documents
 // @access  Private
 const listDocuments = asyncHandler(async (req, res) => {
-  const documents = await Document.find({ user: req.user._id });
+  const documents = await Document.find({ user: req.user._id }).populate(
+    "user",
+    "idNumber"
+  );
   res.json(documents);
 });
 
